@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+// Acts as the top level controller calling on GameWorld for the objects and telling things what to do
 class TowerGame extends SurfaceView implements Runnable {
 
     // Objects for the game loop/thread

@@ -7,11 +7,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 
-public class Enemy extends GameObject{
+public class Enemy extends MoveableGameObject{
 
     private int health;
     private int speed;
     private int resistance;
+    private int heading;
     private int size;                       //size of enemy on screen
     private Bitmap enemyImage;
     private Point location = new Point();   // current location on screen
@@ -24,7 +25,13 @@ public class Enemy extends GameObject{
      this.size = builder.size;
     }
 
-    void draw (Canvas canvas, Paint paint) {
+    private void move() {
+
+    }
+
+    Point getLocation() { return location; }
+
+    void draw(Canvas canvas, Paint paint) {
         canvas.drawBitmap(enemyImage, location.x * size, location.y * size, paint);
     }
 
