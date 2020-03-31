@@ -24,15 +24,31 @@ class TowerGame extends SurfaceView implements Runnable {
     private volatile boolean playing = false;
     private volatile boolean paused = true;
 
+    // The size in segments of the playable area
+    private final int NUM_BLOCKS_WIDE = 100;
+    private int NumBlocksHigh;
+    private Point screenSize;
+
     // Objects for drawing
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
     private Paint paint;
 
+    //World/Object declaration
+    GameWorld gameWorld;
 
-    public TowerGame(Context context, Point size) {
+
+    public TowerGame(Context context, Point screenSize) {
 
         super(context);
+
+        // Work out how many pixels each block is
+        int blockSize = screenSize.x / NUM_BLOCKS_WIDE;
+        // How many blocks of the same size will fit into the height
+        NumBlocksHigh = screenSize.y / blockSize;
+        this.screenSize = screenSize;
+
+        gameWorld = new GameWorld(context, screenSize);
 
 
     }
@@ -42,7 +58,7 @@ class TowerGame extends SurfaceView implements Runnable {
     public void run() {
         while (playing) {
             if (!paused) {
-                // Update 10 times a second
+                // Update 30 times a second
                 if (updateRequired()) {
                     update();
                 }
@@ -55,8 +71,8 @@ class TowerGame extends SurfaceView implements Runnable {
     // Check to see if it is time for an update
     public boolean updateRequired() {
 
-        // Run at 10 frames per second
-        final long TARGET_FPS = 10;
+        // Run at 30 frames per second
+        final long TARGET_FPS = 30;
         // There are 1000 milliseconds in a second
         final long MILLIS_PER_SECOND = 1000;
 
