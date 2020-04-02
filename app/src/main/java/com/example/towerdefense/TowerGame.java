@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.os.Build;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Random;
 
 // Acts as the top level controller calling on GameWorld for the objects and telling things what to do
-class TowerGame extends SurfaceView implements Runnable {
+class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
 
     // Objects for the game loop/thread
     private Thread thread = null;
@@ -26,7 +27,7 @@ class TowerGame extends SurfaceView implements Runnable {
 
     // The size in segments of the playable area
     private final int NUM_BLOCKS_WIDE = 100;
-    private int NumBlocksHigh;
+    private float NumBlocksHigh;
     private Point screenSize;
 
     // Objects for drawing
@@ -34,8 +35,17 @@ class TowerGame extends SurfaceView implements Runnable {
     private SurfaceHolder surfaceHolder;
     private Paint paint;
 
+    // Game View class declaration for viewing everything
+    GameView gameView;
+    //Game User interface display
+    UserInterface userInterface;
+
     //World/Object declaration
     GameWorld gameWorld;
+
+    //An array list for all input observations made by UI/screen
+    private ArrayList<InputObserver> inputObservers = new ArrayList();
+    InputController inputController;
 
 
     public TowerGame(Context context, Point screenSize) {
@@ -43,12 +53,18 @@ class TowerGame extends SurfaceView implements Runnable {
         super(context);
 
         // Work out how many pixels each block is
-        int blockSize = screenSize.x / NUM_BLOCKS_WIDE;
+        float blockSize = screenSize.x / NUM_BLOCKS_WIDE;
         // How many blocks of the same size will fit into the height
         NumBlocksHigh = screenSize.y / blockSize;
         this.screenSize = screenSize;
 
         gameWorld = new GameWorld(context, screenSize);
+
+        inputController = new InputController(this);
+
+        gameView = new GameView(this);
+        userInterface = new UserInterface(screenSize);
+
 
 
     }
@@ -97,7 +113,26 @@ class TowerGame extends SurfaceView implements Runnable {
     }
 
     public void draw() {
+        //Draw everything
 
+        gameView.draw(gameWorld);
+    }
+
+    public void addObserver(InputObserver observer) {
+
+        inputObservers.add(observer);
+
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+
+        for (InputObserver observer : inputObservers) {
+            observer.input(motionEvent);
+        }
+
+
+        return true;
     }
 
     // Stop the thread

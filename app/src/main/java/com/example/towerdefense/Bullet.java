@@ -2,14 +2,15 @@ package com.example.towerdefense;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Point;
+import android.graphics.PointF;
 
-public class Bullet extends MoveableGameObject{
+public class Bullet extends MoveableGameObject {
 
-    private int size;
-    private Point location;
+    private float size;
+    private PointF location;
     private int heading;
     private int speed;
+    private int damage;
 
     Bullet() {
         super(MoveableObjectType.Bullet);
