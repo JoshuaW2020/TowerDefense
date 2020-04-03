@@ -1,10 +1,14 @@
 package com.example.towerdefense;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.graphics.RectF;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,17 +59,59 @@ public class GameWorld {
     public void addDrone() {
         //Add a drone to the gameworld list
         drones.add(movingObjectsFactory.build(MoveableObjectType.Drone));
+
+        drones.get(drones.size() - 1).spawn(screenSize);
     }
 
     public void addTower() {
 
     }
 
-    public void moveEnemies() {
+    public void addDrones(GameState gameState, Level level) {
+        drones.clear();
+
+        drones = level.getWaveDrones(gameState);
 
     }
 
-    public void towersShoot() {
+    public void moveEnemies(long fps) {
+        //Move all enemies
+
+        //Move drones
+        for (int i = 0; i < drones.size(); i++) {
+
+            if (i == 0)
+                drones.get(i).move(fps);
+            else {
+                //If the earlier enemy is no longer intersecting the next enemy then allow next enemy to move
+                if (!RectF.intersects(drones.get(i-1).getHitBox(), drones.get(i).getHitBox())) {
+                    drones.get(i).move(fps);
+                }
+            }
+        }
+
+
+    }
+
+    public void checkEnemies(GameState gameState) {
+        //check all enemies to see bullet collisions/deaths and if they made it to the base
+
+        for (int i = 0; i < drones.size(); i++) {
+            if (drones.get(i).getHitBox().left >= screenSize.x) {
+                gameState.loseHP();
+
+                // and delete the enemy that made it
+                drones.remove(i);
+            }
+        }
+
+    }
+
+    public int getEnemies() {
+        return drones.size() + soldiers.size() + behemoths.size();
+    }
+
+    public void towersShoot(long fps) {
 
     }
 

@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
-public class Bullet extends MoveableGameObject {
+public class Bullet {
 
     private float size;
     private PointF location;
@@ -12,8 +12,12 @@ public class Bullet extends MoveableGameObject {
     private int speed;
     private int damage;
 
+    //private MoveableObjectType type;
+    //private MovementStrategyFactory movementStrategyFactory;
+    //private MovementStrategy movementStrategy;
+
     Bullet() {
-        super(MoveableObjectType.Bullet);
+        //super(MoveableObjectType.Bullet);
         create();
     }
 
@@ -21,8 +25,12 @@ public class Bullet extends MoveableGameObject {
 
     }
 
+    public void spawn() {
+
+    }
+
     //For moving the moveable object
-    public void move() {
+    public void move(long fps) {
 
     }
 

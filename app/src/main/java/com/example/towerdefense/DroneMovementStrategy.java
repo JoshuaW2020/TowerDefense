@@ -2,6 +2,7 @@ package com.example.towerdefense;
 
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.util.Log;
 
 public class DroneMovementStrategy implements MovementStrategy {
 
@@ -14,7 +15,7 @@ public class DroneMovementStrategy implements MovementStrategy {
     }
 
     @Override
-    public PointF move(PointF curLocation, int heading, int speed, int fps) {
+    public PointF move(PointF curLocation, int heading, int speed, long fps) {
 
         PointF newLocation = curLocation;
 
@@ -54,6 +55,10 @@ public class DroneMovementStrategy implements MovementStrategy {
         else if (heading >= 315 && heading < 360) {
             newLocation.y -= speed / fps;
             newLocation.x -= speed / fps;
+        }
+
+        if (newLocation.x >= screenWidth) {
+            Log.w("DroneMovementStrategy", "More than screen width");
         }
 
         return newLocation;

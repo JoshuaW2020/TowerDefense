@@ -23,24 +23,24 @@ public class MainActivity extends AppCompatActivity {
         Point size = new Point();
         display.getSize(size);
 
-        // Create a new instance of the SnakeEngine class
+        // Create a new instance of the towerGame class
         towerGame = new TowerGame(this, size);
 
-        // Make snakeEngine the view of the Activity
+        // Make towerGame the view of the Activity
         setContentView(towerGame);
     }
 
-    // Start the thread in snakeEngine
+    // Start the thread in towerGame
     @Override
     protected void onResume() {
         super.onResume();
-        towerGame.resume();
+        towerGame.startThread();
     }
 
-    // Stop the thread in snakeEngine
+    // Stop the thread in towerGame
     @Override
     protected void onPause() {
         super.onPause();
-        towerGame.pause();
+        towerGame.stopThread();
     }
 }

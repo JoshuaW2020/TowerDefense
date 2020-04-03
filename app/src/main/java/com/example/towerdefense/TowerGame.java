@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.Build;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -21,6 +22,9 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
     private Thread thread = null;
     // Control pausing between updates
     private long nextFrameTime;
+    private long fps;
+
+
     // Is the game currently playing and or paused?
     private volatile boolean playing = false;
     private volatile boolean paused = true;
@@ -30,11 +34,6 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
     private float NumBlocksHigh;
     private Point screenSize;
 
-    // Objects for drawing
-    private Canvas canvas;
-    private SurfaceHolder surfaceHolder;
-    private Paint paint;
-
     // Game View class declaration for viewing everything
     GameView gameView;
     //Game User interface display
@@ -42,6 +41,11 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
 
     //World/Object declaration
     GameWorld gameWorld;
+
+    //The GameState class
+    GameState gameState;
+
+    Level level;
 
     //An array list for all input observations made by UI/screen
     private ArrayList<InputObserver> inputObservers = new ArrayList();
@@ -51,6 +55,8 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
     public TowerGame(Context context, Point screenSize) {
 
         super(context);
+
+        gameView = new GameView(this);
 
         // Work out how many pixels each block is
         float blockSize = screenSize.x / NUM_BLOCKS_WIDE;
@@ -62,8 +68,17 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
 
         inputController = new InputController(this);
 
-        gameView = new GameView(this);
         userInterface = new UserInterface(screenSize);
+
+        //Initialize the game state
+        gameState = new GameState();
+
+        //Start the initial game thread
+        //startThread();
+
+        //Level - will add later
+        level = new Level(context, screenSize);
+
 
 
 
@@ -72,18 +87,109 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
     // Handles the game loop
     @Override
     public void run() {
-        while (playing) {
-            if (!paused) {
-                // Update 30 times a second
-                if (updateRequired()) {
-                    update();
-                }
+        while (gameState.getThreadRunning()) {
+            long frameStartTime = System.currentTimeMillis();
+
+
+            if (!gameState.getPaused()) {
+
+                //The call to update the game objects
+                update();
+
             }
 
-            draw();
+            //If game is over and paused
+            if (gameState.getPaused() && gameState.getGameOver()) {
+
+                //Draw game over screen
+                gameView.drawGameOver(gameWorld, userInterface, gameState);
+
+            }else {
+
+                draw();
+            }
+
+            // Measure the frames per second in the usual way
+            long timeThisFrame = System.currentTimeMillis() - frameStartTime;
+            if (timeThisFrame >= 1) {
+                final int MILLIS_IN_SECOND = 1000;
+                fps = MILLIS_IN_SECOND / timeThisFrame;
+            }
         }
     }
 
+    public void update() {
+
+        if (gameWorld.getEnemies() == 0 && gameState.getHP() > 0) {
+
+            gameState.nextWave();
+
+            if (gameState.getWave() >= 5) {
+                //Increase level
+            }
+
+            //Spawn next wave of enemies
+            gameWorld.addDrones(gameState, level);
+            //gameWorld.addSoldiers(gameState, level);
+
+
+
+        }
+
+        //Update everything in gameWorld
+        gameWorld.moveEnemies(fps);
+        gameWorld.towersShoot(fps);
+
+        //Check if any enemies are dead, if so, delete them
+        gameWorld.checkEnemies(gameState);
+
+    }
+
+    public void draw() {
+        //Draw everything
+
+        gameView.draw(gameWorld, userInterface, gameState);
+
+
+    }
+
+    public void addObserver(InputObserver observer) {
+
+        inputObservers.add(observer);
+
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+
+        for (InputObserver observer : inputObservers) {
+            observer.input(motionEvent, gameState);
+        }
+
+
+        return true;
+    }
+
+
+    public void stopThread() {
+        gameState.stopEverything();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            Log.e("Exception","stopThread()" + e.getMessage());
+        }
+    }
+
+    public void startThread() {
+        gameState.startThread();
+        playing = true;
+
+        thread = new Thread(this);
+        thread.start();
+    }
+
+    // Old and Unused
     // Check to see if it is time for an update
     public boolean updateRequired() {
 
@@ -108,33 +214,7 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
         return false;
     }
 
-    public void update() {
-
-    }
-
-    public void draw() {
-        //Draw everything
-
-        gameView.draw(gameWorld);
-    }
-
-    public void addObserver(InputObserver observer) {
-
-        inputObservers.add(observer);
-
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent motionEvent) {
-
-        for (InputObserver observer : inputObservers) {
-            observer.input(motionEvent);
-        }
-
-
-        return true;
-    }
-
+    //Old method - unused
     // Stop the thread
     public void pause() {
         playing = false;
@@ -145,7 +225,7 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
         }
     }
 
-
+    //old method - unused
     // Start the thread
     public void resume() {
         playing = true;

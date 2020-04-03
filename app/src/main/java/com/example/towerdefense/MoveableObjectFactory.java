@@ -17,11 +17,9 @@ public class MoveableObjectFactory {
     }
 
     public MoveableGameObject build(MoveableObjectType type) {
-        MoveableGameObject object= null;
         switch (type) {
             case Drone:
-                object = new CyborgDrone(context, blockSize, screenSize);
-                break;
+                return new CyborgDrone(context, blockSize, screenSize);
 
             case Soldier:
                 ;
@@ -37,8 +35,8 @@ public class MoveableObjectFactory {
 
             default:
                 //Exception: no compatible type found
-                break;
+                return null;
         }
-        return object;
+        return null;
     }
 }
