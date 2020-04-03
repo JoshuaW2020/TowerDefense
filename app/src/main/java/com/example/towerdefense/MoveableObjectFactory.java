@@ -29,7 +29,7 @@ public class MoveableObjectFactory {
                 ;
                 break;
 
-            case Bullet:
+            case Plasma:
                 ;
                 break;
 

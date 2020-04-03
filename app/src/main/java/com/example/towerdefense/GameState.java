@@ -1,5 +1,8 @@
 package com.example.towerdefense;
 
+import android.graphics.Point;
+import android.graphics.PointF;
+
 public class GameState {
 
     //The basic stats variables
@@ -8,17 +11,27 @@ public class GameState {
     // Each enemy that passes the defenses "damages" for 1 hp
     private int baseHP = 20;
 
+    //Money
+    private int money = 10;
+
+    //Tower being added
+    private static FixedObjectType towerType = null;
+    private static Point towerPlacement = null;
+
     //The actual game state variables
     private static volatile boolean paused = true;
     //private static volatile boolean waveWon = false;
     private static volatile boolean gameOver = true;
     private static volatile boolean threadRunning = false;
+    private static volatile boolean addingTower = false;
+    private static volatile boolean placedTower = false;
 
 
     public void startNewGame() {
         wave = 0;
         level = 0;
         baseHP = 20;
+        money = 10;
 
         resume();
     }
@@ -52,9 +65,36 @@ public class GameState {
         }
     }
 
+    public FixedObjectType getTowerType() { return towerType; }
+
+    public Point getTowerPlacement() { return towerPlacement; }
+
+    public void addTower(FixedObjectType tower) {
+        addingTower = true;
+        towerType = tower;
+    }
+
+    public void addedTower() {
+        addingTower = false;
+        towerType = null;
+        placedTower = false;
+        towerPlacement = null;
+    }
+
+    public boolean getAddingTower() { return addingTower; }
+
+    public boolean getPlacedTower() { return placedTower; }
+
+    public void placeTower(Point placement) {
+        placedTower = true;
+        towerPlacement = placement;
+    }
+
     public int getHP() {
         return baseHP;
     }
+
+    public int getMoney() { return money; }
 
     public int getWave() {
         return wave;
@@ -64,7 +104,7 @@ public class GameState {
         wave++;
     }
 
-    public void resetWave() {
+    public void resetWaves() {
         wave = 0;
     }
 

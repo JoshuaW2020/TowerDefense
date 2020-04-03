@@ -6,6 +6,9 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // Acts as parent class (moveable game object ie. enemy/bullet) of the different enemy types (all enemies will need to move, nothing else will)
 public abstract class MoveableGameObject {
 
@@ -15,6 +18,8 @@ public abstract class MoveableGameObject {
 
     private PointF location;
     private RectF hitBox;
+
+    private List<EnemyObserver> observers = new ArrayList();
 
     public MoveableGameObject(MoveableObjectType type) {
         this.type = type;
@@ -41,4 +46,15 @@ public abstract class MoveableGameObject {
 
     // Every object needs to draw itself
     abstract void draw(Canvas canvas, Paint paint);
+
+    public void attach(EnemyObserver observer) {
+        observers.add(observer);
+    }
+
+    public void notifyObservers() {
+        for (EnemyObserver observer : observers)
+            observer.getHitBox();
+    }
+
+
 }

@@ -26,6 +26,7 @@ public class GameWorld {
     float blockSize;
 
     private MoveableObjectFactory movingObjectsFactory;
+    private FixedGameObjectFactory fixedObjectFactory;
 
     private ArrayList<MoveableGameObject> drones;
     private ArrayList<MoveableGameObject> soldiers;
@@ -54,6 +55,8 @@ public class GameWorld {
         //Create the Moveable object factory to create all the moveable objects
         movingObjectsFactory = new MoveableObjectFactory(context, blockSize, screenSize);
 
+        fixedObjectFactory = new FixedGameObjectFactory(context, blockSize, screenSize);
+
     }
 
     public void addDrone() {
@@ -63,7 +66,14 @@ public class GameWorld {
         drones.get(drones.size() - 1).spawn(screenSize);
     }
 
-    public void addTower() {
+    //Created and place tower into game world
+    public void addTower(FixedObjectType towerType, Point location) {
+
+        //Create the tower
+        towers.add(fixedObjectFactory.build(towerType));
+
+        //Spawn tower where placed
+        towers.get(towers.size() - 1).spawn(screenSize, location);
 
     }
 
@@ -130,7 +140,7 @@ public class GameWorld {
 
         //Now draw the towers
         for (FixedGameObject tower : towers) {
-            ;
+            tower.draw(canvas, paint);
         }
     }
 

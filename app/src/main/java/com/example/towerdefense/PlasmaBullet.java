@@ -1,10 +1,14 @@
 package com.example.towerdefense;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.PointF;
 
-public class Bullet {
+import static com.example.towerdefense.MoveableObjectType.Plasma;
+
+public class PlasmaBullet extends MoveableGameObject {
 
     private float size;
     private PointF location;
@@ -12,12 +16,12 @@ public class Bullet {
     private int speed;
     private int damage;
 
-    //private MoveableObjectType type;
-    //private MovementStrategyFactory movementStrategyFactory;
-    //private MovementStrategy movementStrategy;
 
-    Bullet() {
-        //super(MoveableObjectType.Bullet);
+    PlasmaBullet(Context context, float blockSize, Point screenSize) {
+
+        super(Plasma);
+        this.size = blockSize / 2;  //Half the regular block size
+
         create();
     }
 
@@ -25,7 +29,7 @@ public class Bullet {
 
     }
 
-    public void spawn() {
+    public void spawn(Point location) {
 
     }
 

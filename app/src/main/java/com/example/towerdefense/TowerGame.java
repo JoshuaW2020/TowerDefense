@@ -136,6 +136,16 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
 
         }
 
+        //Check if a tower is being created
+        if (gameState.getAddingTower()) {
+            if (gameState.getPlacedTower()) {
+                gameWorld.addTower(gameState.getTowerType(), gameState.getTowerPlacement());
+
+                //Now change game state to reflect tower placement
+                gameState.addedTower();
+            }
+        }
+
         //Update everything in gameWorld
         gameWorld.moveEnemies(fps);
         gameWorld.towersShoot(fps);
@@ -163,7 +173,7 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
     public boolean onTouchEvent(MotionEvent motionEvent) {
 
         for (InputObserver observer : inputObservers) {
-            observer.input(motionEvent, gameState);
+            observer.input(motionEvent, gameState, userInterface.getBuyButtons());
         }
 
 

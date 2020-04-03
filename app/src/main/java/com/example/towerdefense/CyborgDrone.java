@@ -10,6 +10,9 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.example.towerdefense.MoveableObjectType.Drone;
 
 public class CyborgDrone extends MoveableGameObject {
@@ -24,6 +27,8 @@ public class CyborgDrone extends MoveableGameObject {
     private PointF location = new PointF();   // current location on screen
     private MoveableObjectType objectType;
     private RectF hitBox;
+
+    private List<EnemyObserver> observers = new ArrayList();
 
     //Movement strategy
     private MovementStrategyFactory movementStrategyFactory;
@@ -91,6 +96,9 @@ public class CyborgDrone extends MoveableGameObject {
         //Update hitbox of enemy
         updateHitBox();
 
+        //Notify observers of movement
+
+
     }
 
     @Override
@@ -115,6 +123,15 @@ public class CyborgDrone extends MoveableGameObject {
         hitBox.set(location.x, location.y, location.x + size, location.y + size);
 
 
+    }
+
+    public void attach(EnemyObserver observer) {
+        observers.add(observer);
+    }
+
+    public void notifyObservers() {
+        for (EnemyObserver observer : observers)
+            observer.getHitBox();
     }
 
 }
