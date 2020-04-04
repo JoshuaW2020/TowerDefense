@@ -10,6 +10,8 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import static com.example.towerdefense.MoveableObjectType.Plasma;
+
 public class PlasmaTurret extends FixedGameObject{
 
     private float size;
@@ -21,22 +23,28 @@ public class PlasmaTurret extends FixedGameObject{
     private RectF rangeBox;
     private int range;
 
+    private MoveableGameObject bullet = null;
+
+    MoveableObjectFactory bulletFactory;
 
 
-    PlasmaTurret(Context context, float blockSize) {
+
+    PlasmaTurret(Context context, float blockSize, Point screenSize) {
 
         // Size is 4 times the normal "block" size ie.80 pixels
         this.size = blockSize * 4;
+
+        bulletFactory = new MoveableObjectFactory(context, blockSize, screenSize);
 
         create(context);
     }
 
     private void create(Context context) {
 
-        shotSpeed = 200;
+        shotSpeed = 50;
         reloading = 0;
 
-        range = 300;
+        range = 500;
 
         //Assign bitmap/scale design
         this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.tower);
@@ -47,7 +55,7 @@ public class PlasmaTurret extends FixedGameObject{
 
     }
 
-    public void shotCheck() {
+    public void shotCheck(RectF enemy) {
 
         //Increase reload and check if tower can shoot
         reloading++;
@@ -55,13 +63,42 @@ public class PlasmaTurret extends FixedGameObject{
         if (reloading == shotSpeed) {
             //If enemy in range
             //shoot at it
-
-
+            if (enemy != null) {
+                if (RectF.intersects(rangeBox, enemy)) {
+                    shoot(enemy);
+                }
+            }
         }
     }
 
-    private void shoot() {
+    private void shoot(RectF enemy) {
+        //Now create/spawn a bullet of tower type
+        bullet = bulletFactory.build(Plasma);
+        bullet.spawn(new PointF(location.x - 10, location.y - 10));
+        bullet.markTarget(new PointF(enemy.centerX(), enemy.centerY()));
 
+        reloading = 0;
+    }
+
+    public MoveableGameObject getBullet() { return bullet; }
+
+    public void moveBullets(long fps, RectF enemy) {
+
+        if (bullet != null) {
+
+
+            bullet.move(fps);
+
+            //if bullet outside of range, delete it
+            if (!rangeBox.contains(bullet.getHitBox())) {
+                deleteBullet();
+            }
+        }
+
+    }
+
+    public void deleteBullet() {
+        bullet = null;
     }
 
     Rect getHitBox() { return hitBox; }
@@ -81,6 +118,9 @@ public class PlasmaTurret extends FixedGameObject{
 
     void draw(Canvas canvas, Paint paint) {
         canvas.drawBitmap(bitmap, location.x, location.y, paint);
+
+        if (bullet != null)
+            bullet.draw(canvas, paint);
     }
 
 }

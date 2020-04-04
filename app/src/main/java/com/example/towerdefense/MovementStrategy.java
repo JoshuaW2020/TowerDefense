@@ -6,4 +6,6 @@ public interface MovementStrategy {
 
     PointF move(PointF curLocation, int heading, int speed, long fps);
 
+    int getHeading(PointF curLocation, PointF target);
+
 }

@@ -20,7 +20,7 @@ public class FixedGameObjectFactory {
     public FixedGameObject build(FixedObjectType type) {
         switch (type) {
             case Turret:
-                return new PlasmaTurret(context, blockSize);
+                return new PlasmaTurret(context, blockSize, screenSize);
 
             case Cannon:
                 return null;

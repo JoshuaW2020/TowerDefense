@@ -20,6 +20,7 @@ public class CyborgDrone extends MoveableGameObject {
     private int health;
     private int speed;
     private int resistance;
+    private int worth;
     private boolean dead;
     private int heading;
     private float size;                   //size of enemy on screen - a specific block/square size
@@ -43,41 +44,43 @@ public class CyborgDrone extends MoveableGameObject {
 
     private void create(Context context, Point screenSize) {
         health = 10;
-        speed = 150;         //will make speed a part of the movement strategy later
+        speed = 50;         //will make speed a part of the movement strategy later
         resistance = 0;     //should also make part of a strategy based on previous wave's resistance/tower damage
 
         //Assign bitmap/scale design
         this.enemyImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.triangle_enemy);
         this.enemyImage = Bitmap.createScaledBitmap(enemyImage, (int)size, (int)size, false);
 
-        //Type of object
-        objectType = Drone;
-
         //Assign movement strategy
         movementStrategyFactory = new MovementStrategyFactory(screenSize);
-        movementStrategy = movementStrategyFactory.getStrategy(objectType);
+        movementStrategy = movementStrategyFactory.getStrategy(Drone);
 
         //hit box is a square box
         hitBox = new RectF();
 
         dead = false;
+        worth = 5;
 
     }
 
-    public void spawn(Point screen) {
+    public void spawn(PointF location) {
 
         // Spawn on left side of screen outside of view for now
-        location = new PointF(-20, 500);
+        this.location = location;
 
         heading = 90;
 
         updateHitBox();
     }
 
-    public boolean bulletCollision(RectF bulletHitBox, int bulletDamage) {
+    public int getWorth() { return worth; }
 
-        if(RectF.intersects(hitBox, bulletHitBox)) {
-            health -= bulletDamage;
+    public boolean getDead() { return dead; }
+
+    public boolean bulletCollision(MoveableGameObject bullet) {
+
+        if (RectF.intersects(hitBox, bullet.getHitBox())) {
+            health -= bullet.getBulletDamage();
 
             if (health <= 0)
                 dead = true;

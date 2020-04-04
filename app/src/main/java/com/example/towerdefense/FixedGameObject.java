@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 public abstract class FixedGameObject {
 
@@ -15,11 +16,18 @@ public abstract class FixedGameObject {
     private int reloading;
 
 
-    abstract void shotCheck();
+    abstract void shotCheck(RectF enemy);
 
-    private void shoot() {
+    private void shoot(RectF enemy) {
         //shoot a bullet
+
     }
+
+    abstract MoveableGameObject getBullet();
+
+    abstract void moveBullets(long fps, RectF enemy);
+
+    abstract void deleteBullet();
 
     //For getting location of object - can't update location after creation
     abstract Point getLocation();

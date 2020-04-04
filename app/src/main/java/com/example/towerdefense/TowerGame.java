@@ -148,7 +148,8 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
 
         //Update everything in gameWorld
         gameWorld.moveEnemies(fps);
-        gameWorld.towersShoot(fps);
+        gameWorld.towersShoot();
+        gameWorld.moveBullets(fps);
 
         //Check if any enemies are dead, if so, delete them
         gameWorld.checkEnemies(gameState);

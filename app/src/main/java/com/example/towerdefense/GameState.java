@@ -12,7 +12,7 @@ public class GameState {
     private int baseHP = 20;
 
     //Money
-    private int money = 10;
+    private static int money = 10;
 
     //Tower being added
     private static FixedObjectType towerType = null;
@@ -56,6 +56,10 @@ public class GameState {
 
     public boolean getGameOver() {
         return gameOver;
+    }
+
+    public void addMoney(int enemyWorth) {
+        money += enemyWorth;
     }
 
     public void loseHP() {

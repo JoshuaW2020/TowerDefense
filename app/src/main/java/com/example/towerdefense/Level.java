@@ -2,6 +2,7 @@ package com.example.towerdefense;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class Level {
 
             drones.add(movingObjectsFactory.build(MoveableObjectType.Drone));
 
-            drones.get(i).spawn(screenSize);
+            drones.get(i).spawn(new PointF(-20, 500));
         }
 
         return drones;

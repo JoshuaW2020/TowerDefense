@@ -5,19 +5,19 @@ import android.graphics.PointF;
 
 public class MovementStrategyFactory {
 
-    private final MovementStrategy droneMovementStrategy;
+    private final MovementStrategy directMovementStrategy;
 
     MovementStrategyFactory(Point screenSize) {
 
-        droneMovementStrategy = new DroneMovementStrategy(screenSize);
+        directMovementStrategy = new DirectMovementStrategy(screenSize);
     }
 
     public MovementStrategy getStrategy(MoveableObjectType type) {
         switch (type) {
-            case Drone: return droneMovementStrategy;
+            case Drone: return directMovementStrategy;
             case Soldier: return null;
             case Behemoth: return null;
-            case Bullet: return null;
+            case Plasma: return directMovementStrategy;
             default : return null;
         }
     }

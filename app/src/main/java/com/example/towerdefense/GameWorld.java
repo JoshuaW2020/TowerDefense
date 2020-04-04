@@ -59,13 +59,6 @@ public class GameWorld {
 
     }
 
-    public void addDrone() {
-        //Add a drone to the gameworld list
-        drones.add(movingObjectsFactory.build(MoveableObjectType.Drone));
-
-        drones.get(drones.size() - 1).spawn(screenSize);
-    }
-
     //Created and place tower into game world
     public void addTower(FixedObjectType towerType, Point location) {
 
@@ -107,6 +100,21 @@ public class GameWorld {
         //check all enemies to see bullet collisions/deaths and if they made it to the base
 
         for (int i = 0; i < drones.size(); i++) {
+            for (FixedGameObject tower : towers) {
+                if (tower.getBullet() != null) {
+                    if (drones.get(i).bulletCollision(tower.getBullet())) {
+                        tower.deleteBullet();
+                    }
+                }
+            }
+
+            if (drones.get(i).getDead()) {
+                gameState.addMoney(drones.get(i).getWorth());
+                drones.remove(i);
+            }
+        }
+
+        for (int i = 0; i < drones.size(); i++) {
             if (drones.get(i).getHitBox().left >= screenSize.x) {
                 gameState.loseHP();
 
@@ -121,7 +129,20 @@ public class GameWorld {
         return drones.size() + soldiers.size() + behemoths.size();
     }
 
-    public void towersShoot(long fps) {
+    public void towersShoot() {
+
+        if (drones.size() >= 1) {
+            for (FixedGameObject tower : towers) {
+                tower.shotCheck(drones.get(0).getHitBox());
+            }
+        }
+    }
+
+    public void moveBullets(long fps) {
+
+        for (FixedGameObject tower : towers) {
+            tower.moveBullets(fps, drones.get(0).getHitBox());
+        }
 
     }
 
@@ -138,7 +159,7 @@ public class GameWorld {
             behemoth.draw(canvas, paint);
         }
 
-        //Now draw the towers
+        //Now draw the towers / bullets
         for (FixedGameObject tower : towers) {
             tower.draw(canvas, paint);
         }

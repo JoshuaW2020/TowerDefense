@@ -30,8 +30,7 @@ public class MoveableObjectFactory {
                 break;
 
             case Plasma:
-                ;
-                break;
+                return new PlasmaBullet(context, blockSize, screenSize);
 
             default:
                 //Exception: no compatible type found

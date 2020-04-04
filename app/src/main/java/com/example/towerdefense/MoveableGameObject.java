@@ -29,6 +29,14 @@ public abstract class MoveableGameObject {
         //Create the specific type of cyborg here
     }
 
+    public void markTarget(PointF target) {
+        //mark the target
+    }
+
+    public int getWorth() { return 0; }
+
+    public boolean getDead() {return false;}
+
     public PointF getLocation() {
         return location;
     }
@@ -37,10 +45,12 @@ public abstract class MoveableGameObject {
         return hitBox;
     }
 
-    public boolean bulletCollision(RectF bulletHitBox, int bulletDamage) {return false;}
+    public boolean bulletCollision(MoveableGameObject bullet) {return false;}
+
+    public int getBulletDamage() { return 0; }
 
     //Just for beginning of project
-    abstract void spawn(Point screen);
+    abstract void spawn(PointF location);
 
     abstract void move(long fps);
 
