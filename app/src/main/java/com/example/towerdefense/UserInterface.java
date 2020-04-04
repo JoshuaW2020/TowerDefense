@@ -53,6 +53,31 @@ public class UserInterface {
 
         drawButtons(canvas, paint);
 
+        //Draw main message based on game state
+
+    }
+
+    public void drawGameOver(Canvas canvas, Paint paint) {
+
+        //Pick paint - dark red
+        paint.setColor(Color.argb(255, 102, 0, 0));
+
+        //Draw the text
+        canvas.drawText("GAME OVER", screenWidth / 2, screenHeight / 2, paint);
+
+        paint.setColor(Color.argb(255, 255, 255, 255));
+    }
+
+    public void drawFirstGame(Canvas canvas, Paint paint) {
+
+        //pick paint - dark green
+        paint.setColor(Color.argb(255, 0, 102, 0));
+
+        //draw the text
+        canvas.drawText("Welcome to the Space Defense Force, Commander", screenWidth / 4, screenHeight / 2, paint);
+
+        //Set paint back
+        paint.setColor(Color.argb(255, 255, 255, 255));
     }
 
     private void drawButtons(Canvas canvas, Paint paint) {

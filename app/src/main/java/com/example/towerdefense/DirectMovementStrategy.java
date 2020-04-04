@@ -19,7 +19,7 @@ public class DirectMovementStrategy implements MovementStrategy{
 
         heading += 90;
 
-        Log.w("heading: ", "heading: " + heading);
+        //Log.w("heading: ", "heading: " + heading);
 
         return heading;
     }
@@ -36,6 +36,8 @@ public class DirectMovementStrategy implements MovementStrategy{
 
         newLocation.x += horizVelocity * speed / fps;
         newLocation.y += vertVelocity * speed / fps;
+
+        //Log.w("new location", " x: " + newLocation.x + " y: " + newLocation.y);
 
         return newLocation;
     }

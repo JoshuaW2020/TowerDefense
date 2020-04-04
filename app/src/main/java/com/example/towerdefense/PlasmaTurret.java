@@ -44,7 +44,7 @@ public class PlasmaTurret extends FixedGameObject{
         shotSpeed = 50;
         reloading = 0;
 
-        range = 500;
+        range = 400;
 
         //Assign bitmap/scale design
         this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.tower);
@@ -60,7 +60,7 @@ public class PlasmaTurret extends FixedGameObject{
         //Increase reload and check if tower can shoot
         reloading++;
 
-        if (reloading == shotSpeed) {
+        if (reloading >= shotSpeed) {
             //If enemy in range
             //shoot at it
             if (enemy != null) {

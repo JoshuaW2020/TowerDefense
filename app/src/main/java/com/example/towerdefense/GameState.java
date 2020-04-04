@@ -2,6 +2,10 @@ package com.example.towerdefense;
 
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameState {
 
@@ -13,10 +17,15 @@ public class GameState {
 
     //Money
     private static int money = 10;
+    private int[] towerCost = {10, 25, 50, 100, 250};
+
 
     //Tower being added
     private static FixedObjectType towerType = null;
     private static Point towerPlacement = null;
+
+    //First time starting game?
+    private boolean firstGame = true;
 
     //The actual game state variables
     private static volatile boolean paused = true;
@@ -29,12 +38,15 @@ public class GameState {
 
     public void startNewGame() {
         wave = 0;
-        level = 0;
+        level = 1;
         baseHP = 20;
         money = 10;
 
+        firstGame = false;
         resume();
     }
+
+    public boolean getFirstGame() { return firstGame; }
 
     private void endGame() {
         gameOver = true;
@@ -74,11 +86,68 @@ public class GameState {
     public Point getTowerPlacement() { return towerPlacement; }
 
     public void addTower(FixedObjectType tower) {
-        addingTower = true;
-        towerType = tower;
+
+        //Check if player has enough money to purchase tower
+        switch (tower) {
+            case Turret: {
+                if (money >= towerCost[0]) {
+                    addingTower = true;
+                    towerType = tower;
+                }
+                break;
+            }
+            case Cannon: {
+                Log.w("Cannon", "Here");
+                if (money >= towerCost[1]) {
+                    addingTower = true;
+                    towerType = tower;
+                }
+                break;
+            }
+            case Emplacement: {
+                if (money >= towerCost[2]) {
+                    addingTower = true;
+                    towerType = tower;
+                }
+                break;
+            }
+            case Rockets: {
+                if (money >= towerCost[3]) {
+                    addingTower = true;
+                    towerType = tower;
+                }
+                break;
+            }
+            case Blackholes: {
+                if (money >= towerCost[4]) {
+                    addingTower = true;
+                    towerType = tower;
+                }
+                break;
+            }
+        }
+
     }
 
     public void addedTower() {
+        //placed tower, now take away money = cost of tower
+        switch (towerType) {
+            case Turret:
+                money -= towerCost[0]; break;
+            case Cannon:
+                money -= towerCost[1]; break;
+            case Emplacement:
+                money -= towerCost[2]; break;
+            case Rockets:
+                money -= towerCost[3]; break;
+            case Blackholes:
+                money -= towerCost[4]; break;
+            default: //do nothing
+                break;
+        }
+
+        Log.w("addedtower", "money:" + money);
+
         addingTower = false;
         towerType = null;
         placedTower = false;

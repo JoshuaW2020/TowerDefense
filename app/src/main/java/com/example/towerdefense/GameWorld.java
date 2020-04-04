@@ -4,9 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
 
@@ -31,6 +33,9 @@ public class GameWorld {
     private ArrayList<MoveableGameObject> drones;
     private ArrayList<MoveableGameObject> soldiers;
     private ArrayList<MoveableGameObject> behemoths;
+
+    //enemy path
+    private ArrayList<Rect> paths;
 
     private ArrayList<FixedGameObject> towers;
 
@@ -75,6 +80,8 @@ public class GameWorld {
 
         drones = level.getWaveDrones(gameState);
 
+        paths = level.getPath();
+
     }
 
     public void moveEnemies(long fps) {
@@ -85,19 +92,18 @@ public class GameWorld {
 
             if (i == 0)
                 drones.get(i).move(fps);
-            else {
+            else if (!RectF.intersects(drones.get(i - 1).getHitBox(), drones.get(i).getHitBox())) {
                 //If the earlier enemy is no longer intersecting the next enemy then allow next enemy to move
-                if (!RectF.intersects(drones.get(i-1).getHitBox(), drones.get(i).getHitBox())) {
-                    drones.get(i).move(fps);
-                }
+                drones.get(i).move(fps);
+
             }
         }
 
 
     }
 
-    public void checkEnemies(GameState gameState) {
-        //check all enemies to see bullet collisions/deaths and if they made it to the base
+    public void checkEnemies(GameState gameState, Level level) {
+        //check all enemies to see bullet collisions/deaths and if they made it to the objective/base
 
         for (int i = 0; i < drones.size(); i++) {
             for (FixedGameObject tower : towers) {
@@ -108,6 +114,7 @@ public class GameWorld {
                 }
             }
 
+            //checks if enemy is dead
             if (drones.get(i).getDead()) {
                 gameState.addMoney(drones.get(i).getWorth());
                 drones.remove(i);
@@ -115,12 +122,22 @@ public class GameWorld {
         }
 
         for (int i = 0; i < drones.size(); i++) {
-            if (drones.get(i).getHitBox().left >= screenSize.x) {
-                gameState.loseHP();
 
-                // and delete the enemy that made it
-                drones.remove(i);
+            //check if enemy made it to first objective
+            if (level.getObjective(0).contains( (int) drones.get(i).getHitBox().centerX(), (int) drones.get(i).getHitBox().centerY())) {
+                //check how many objectives there are - if > 1 -> set next target
+                if (level.getNumOfObjectives() > 1) {
+                    drones.get(i).markTarget(level.getObjectivePoint(i));
+                }
+                //Checks if enemy made it to base ie.right side of map
+                else if (drones.get(i).getHitBox().left >= screenSize.x) {
+                    gameState.loseHP();
+
+                    // and delete the enemy that made it
+                    drones.remove(i);
+                }
             }
+
         }
 
     }
@@ -148,6 +165,17 @@ public class GameWorld {
 
     public void drawObjects(Canvas canvas, Paint paint) {
 
+        paint.setColor(Color.argb(100, 0, 0, 0));
+
+        //Draw the path
+        if (paths != null) {
+            for (Rect path : paths) {
+                canvas.drawRect(path, paint);
+            }
+        }
+
+        paint.setColor(Color.argb(255, 160, 160, 160));
+
         //Draw the different enemies
         for (MoveableGameObject drone : drones) {
             drone.draw(canvas, paint);
@@ -163,6 +191,7 @@ public class GameWorld {
         for (FixedGameObject tower : towers) {
             tower.draw(canvas, paint);
         }
+
     }
 
 }

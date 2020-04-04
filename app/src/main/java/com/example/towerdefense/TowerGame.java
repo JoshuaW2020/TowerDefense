@@ -64,6 +64,9 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
         NumBlocksHigh = screenSize.y / blockSize;
         this.screenSize = screenSize;
 
+        //Level - to load the appropriate level/waves
+        level = new Level(context, screenSize);
+
         gameWorld = new GameWorld(context, screenSize);
 
         inputController = new InputController(this);
@@ -72,15 +75,6 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
 
         //Initialize the game state
         gameState = new GameState();
-
-        //Start the initial game thread
-        //startThread();
-
-        //Level - will add later
-        level = new Level(context, screenSize);
-
-
-
 
     }
 
@@ -98,16 +92,8 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
 
             }
 
-            //If game is over and paused
-            if (gameState.getPaused() && gameState.getGameOver()) {
-
-                //Draw game over screen
-                gameView.drawGameOver(gameWorld, userInterface, gameState);
-
-            }else {
-
-                draw();
-            }
+            //Draw the game screen and let gameState / gameView handle it
+            draw();
 
             // Measure the frames per second in the usual way
             long timeThisFrame = System.currentTimeMillis() - frameStartTime;
@@ -126,12 +112,12 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
 
             if (gameState.getWave() >= 5) {
                 //Increase level
+                gameState.nextLevel();
             }
 
             //Spawn next wave of enemies
             gameWorld.addDrones(gameState, level);
             //gameWorld.addSoldiers(gameState, level);
-
 
 
         }
@@ -152,7 +138,7 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
         gameWorld.moveBullets(fps);
 
         //Check if any enemies are dead, if so, delete them
-        gameWorld.checkEnemies(gameState);
+        gameWorld.checkEnemies(gameState, level);
 
     }
 
@@ -188,7 +174,7 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
         try {
             thread.join();
         } catch (InterruptedException e) {
-            Log.e("Exception","stopThread()" + e.getMessage());
+            Log.e("Exception", "stopThread()" + e.getMessage());
         }
     }
 
@@ -210,7 +196,7 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
         final long MILLIS_PER_SECOND = 1000;
 
         // Are we due to update the frame
-        if(nextFrameTime <= System.currentTimeMillis()){
+        if (nextFrameTime <= System.currentTimeMillis()) {
             // Tenth of a second has passed
 
             // Setup when the next update will be triggered
@@ -223,24 +209,5 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
         }
 
         return false;
-    }
-
-    //Old method - unused
-    // Stop the thread
-    public void pause() {
-        playing = false;
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            // Error
-        }
-    }
-
-    //old method - unused
-    // Start the thread
-    public void resume() {
-        playing = true;
-        thread = new Thread(this);
-        thread.start();
     }
 }

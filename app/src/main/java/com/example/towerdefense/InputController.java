@@ -12,8 +12,6 @@ import static com.example.towerdefense.FixedObjectType.Turret;
 
 public class InputController implements InputObserver {
 
-    private boolean hasTower = false;
-
     public InputController(GameBroadcaster broadcaster) {
         broadcaster.addObserver(this);
     }

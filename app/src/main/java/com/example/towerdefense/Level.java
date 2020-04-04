@@ -3,9 +3,12 @@ package com.example.towerdefense;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Level {
     //Context for object creation
@@ -22,6 +25,9 @@ public class Level {
     private ArrayList<MoveableGameObject> drones;
     private ArrayList<MoveableGameObject> soldiers;
     private ArrayList<MoveableGameObject> behemoths;
+
+    //The map, ie. path for the enemies to take
+    private Map map;
 
     Level(Context context, Point screenSize) {
         this.context = context;
@@ -41,19 +47,33 @@ public class Level {
         //Create the Moveable object factory to create all the moveable objects
         movingObjectsFactory = new MoveableObjectFactory(context, blockSize, screenSize);
 
+        map = new Map(context, screenSize, blockSize);
+
     }
 
     public ArrayList<MoveableGameObject> getWaveDrones(GameState gameState) {
         //create and return a list of drones for the apprpriate wave/level
         drones.clear();
+
         //Create drones = 5 * level wave
         for (int i = 0; i < 5 * gameState.getWave(); i++) {
 
             drones.add(movingObjectsFactory.build(MoveableObjectType.Drone));
 
-            drones.get(i).spawn(new PointF(-20, 500));
+            drones.get(i).spawn(map.getSpawnPoint());
+
+            drones.get(i).markTarget(map.getObjectivePoint(0));
         }
 
         return drones;
     }
+
+    public ArrayList<Rect> getPath() { return map.getPath(); }
+
+    public int getNumOfObjectives() { return map.getNumOfObjectives(); }
+
+    public Rect getObjective(int i) { return map.getObjective(i); }
+
+    public PointF getObjectivePoint(int i) { return map.getObjectivePoint(i); }
+
 }

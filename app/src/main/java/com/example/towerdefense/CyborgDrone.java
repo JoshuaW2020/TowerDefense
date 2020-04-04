@@ -23,10 +23,10 @@ public class CyborgDrone extends MoveableGameObject {
     private int worth;
     private boolean dead;
     private int heading;
+    private PointF target;
     private float size;                   //size of enemy on screen - a specific block/square size
     private Bitmap enemyImage;
     private PointF location = new PointF();   // current location on screen
-    private MoveableObjectType objectType;
     private RectF hitBox;
 
     private List<EnemyObserver> observers = new ArrayList();
@@ -44,7 +44,7 @@ public class CyborgDrone extends MoveableGameObject {
 
     private void create(Context context, Point screenSize) {
         health = 10;
-        speed = 50;         //will make speed a part of the movement strategy later
+        speed = 75;         //will make speed a part of the movement strategy later
         resistance = 0;     //should also make part of a strategy based on previous wave's resistance/tower damage
 
         //Assign bitmap/scale design
@@ -63,14 +63,28 @@ public class CyborgDrone extends MoveableGameObject {
 
     }
 
+    @Override
     public void spawn(PointF location) {
 
-        // Spawn on left side of screen outside of view for now
+        // Spawn at location given
         this.location = location;
 
-        heading = 90;
+        //Log.w("drone", "x: " + location.x + " y: " + location.y);
+
+        //heading = 90;
 
         updateHitBox();
+    }
+
+    @Override
+    public void markTarget(PointF target) {
+        this.target = target;
+
+        getHeading();
+    }
+
+    private void getHeading() {
+        heading = movementStrategy.getHeading(location, target);
     }
 
     public int getWorth() { return worth; }
@@ -121,11 +135,8 @@ public class CyborgDrone extends MoveableGameObject {
     }
 
     private void updateHitBox() {
-
         //Update left, top, right, and bottom
         hitBox.set(location.x, location.y, location.x + size, location.y + size);
-
-
     }
 
     public void attach(EnemyObserver observer) {
