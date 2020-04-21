@@ -43,7 +43,7 @@ public class CyborgDrone extends MoveableGameObject {
     }
 
     private void create(Context context, Point screenSize) {
-        health = 10;
+        health = 15;
         speed = 75;         //will make speed a part of the movement strategy later
         resistance = 0;     //should also make part of a strategy based on previous wave's resistance/tower damage
 
@@ -59,7 +59,7 @@ public class CyborgDrone extends MoveableGameObject {
         hitBox = new RectF();
 
         dead = false;
-        worth = 5;
+        worth = 2;
 
     }
 
@@ -74,6 +74,11 @@ public class CyborgDrone extends MoveableGameObject {
         //heading = 90;
 
         updateHitBox();
+    }
+
+    @Override
+    public void updateStartLocation(float x) {
+        this.location.x = x;
     }
 
     @Override

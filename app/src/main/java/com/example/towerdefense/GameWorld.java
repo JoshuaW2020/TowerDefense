@@ -157,8 +157,10 @@ public class GameWorld {
 
     public void moveBullets(long fps) {
 
-        for (FixedGameObject tower : towers) {
-            tower.moveBullets(fps, drones.get(0).getHitBox());
+        if (!drones.isEmpty()) {
+            for (FixedGameObject tower : towers) {
+                tower.moveBullets(fps, drones.get(0).getHitBox());
+            }
         }
 
     }

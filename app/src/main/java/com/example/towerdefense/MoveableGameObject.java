@@ -54,6 +54,10 @@ public abstract class MoveableGameObject {
 
     abstract void move(long fps);
 
+   public void updateStartLocation(float x) {
+       //Update the start location after spawning
+   };
+
     // Every object needs to draw itself
     abstract void draw(Canvas canvas, Paint paint);
 

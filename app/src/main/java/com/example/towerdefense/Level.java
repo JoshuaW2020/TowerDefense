@@ -4,11 +4,8 @@ import android.content.Context;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Level {
     //Context for object creation
@@ -55,12 +52,18 @@ public class Level {
         //create and return a list of drones for the apprpriate wave/level
         drones.clear();
 
-        //Create drones = 5 * level wave
-        for (int i = 0; i < 5 * gameState.getWave(); i++) {
+        //update start location float
+        float x;
+
+        //Create drones = 4 * level * wave
+        for (int i = 0; i < 4 * gameState.getWave() * gameState.getLevel(); i++) {
 
             drones.add(movingObjectsFactory.build(MoveableObjectType.Drone));
 
             drones.get(i).spawn(map.getSpawnPoint());
+
+            x = map.getSpawnPoint().x;
+            drones.get(i).updateStartLocation(x - 20);
 
             drones.get(i).markTarget(map.getObjectivePoint(0));
         }

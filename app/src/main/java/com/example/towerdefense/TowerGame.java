@@ -113,6 +113,8 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
             if (gameState.getWave() >= 5) {
                 //Increase level
                 gameState.nextLevel();
+                //Reset Waves
+                gameState.resetWaves();
             }
 
             //Spawn next wave of enemies
