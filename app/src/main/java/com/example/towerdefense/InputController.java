@@ -34,7 +34,7 @@ public class InputController implements InputObserver {
 
                 gameState.startNewGame();
             }
-            else if(!gameState.getGameOver()) {
+            else if (!gameState.getGameOver()) {
 
                 //If player tapped to buy plasma tower - button 1
                 if (buttons.get(0).contains(x, y)) {
@@ -45,6 +45,15 @@ public class InputController implements InputObserver {
                 else if (gameState.getAddingTower()) {
                     Point placement = new Point(x, y);
                     gameState.placeTower(placement);
+                }
+                // Pause button - will change button number
+                else if (buttons.get(1).contains(x, y)) {
+
+                    if (!gameState.getPaused()) {
+                        gameState.pause();
+                    }
+                    else
+                        gameState.resume();
                 }
 
             }

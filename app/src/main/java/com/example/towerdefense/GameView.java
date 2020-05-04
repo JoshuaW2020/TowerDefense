@@ -67,6 +67,16 @@ public class GameView {
                 //change text size back
                 paint.setTextSize(defaultTextSize);
             }
+            //If game is paused
+            else if (gameState.getPaused()) {
+
+                gameWorld.drawObjects(canvas, paint);
+                UI.draw(canvas, paint, gameState);
+
+                //Draw main screen
+                UI.drawPaused(canvas, paint);
+
+            }
 
             // Always want to post graphics
             surfaceHolder.unlockCanvasAndPost(canvas);

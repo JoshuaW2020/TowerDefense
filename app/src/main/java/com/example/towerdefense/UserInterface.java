@@ -34,8 +34,11 @@ public class UserInterface {
 
         Rect buyPlasmaTurret = new Rect(statsPadding, 15, statsPadding + buttonWidth, buttonHeight);
 
+        Rect pauseB = new Rect(screenWidth - buttonWidth - buttonPadding, 15, screenWidth - buttonPadding, buttonHeight);
+
         buyButtons = new ArrayList();
         buyButtons.add(buyPlasmaTurret);
+        buyButtons.add(pauseB);
     }
 
     public void draw(Canvas canvas, Paint paint, GameState gameState) {
@@ -78,6 +81,19 @@ public class UserInterface {
 
         //Set paint back
         paint.setColor(Color.argb(255, 255, 255, 255));
+    }
+
+    public void drawPaused(Canvas canvas, Paint paint) {
+
+        //pick paint
+        paint.setColor(Color.argb(255, 255, 255, 0));
+
+        //Draw the text
+        canvas.drawText("PAUSED", (screenWidth / 2) - 10, (screenHeight / 2) + 20, paint);
+
+        //Set paint back
+        paint.setColor(Color.argb(255, 255, 255, 255));
+
     }
 
     private void drawButtons(Canvas canvas, Paint paint) {
