@@ -8,6 +8,8 @@ import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
+import static com.example.towerdefense.FixedObjectType.Rockets;
+import static com.example.towerdefense.FixedObjectType.Cannon;
 import static com.example.towerdefense.FixedObjectType.Turret;
 
 public class InputController implements InputObserver {
@@ -40,13 +42,21 @@ public class InputController implements InputObserver {
                 if (buttons.get(0).contains(x, y)) {
                     gameState.addTower(Turret);
                 }
+                //If player tapped to buy Laser tower - button 2
+                else if (buttons.get(1).contains(x, y)) {
+                    gameState.addTower(Cannon);
+                }
+                //If player tapped to buy Rockets tower - button 3
+                else if (buttons.get(2).contains(x, y)) {
+                    ;
+                }
                 //If player is placing tower - can't be on the path
                 else if (gameState.getAddingTower()) {
                     Point placement = new Point(x, y);
                     gameState.placeTower(placement);
                 }
-                // Pause button - will change button number
-                else if (buttons.get(1).contains(x, y)) {
+                // Pause button - will change button number - last button
+                else if (buttons.get(3).contains(x, y)) {
 
                     if (!gameState.getPaused()) {
                         gameState.pause();

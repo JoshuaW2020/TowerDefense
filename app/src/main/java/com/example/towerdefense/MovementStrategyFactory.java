@@ -18,6 +18,8 @@ public class MovementStrategyFactory {
             case Soldier: return null;
             case Behemoth: return null;
             case Plasma: return directMovementStrategy;
+            case Laser: return directMovementStrategy;
+            case Rocket: return null;
             default : return null;
         }
     }

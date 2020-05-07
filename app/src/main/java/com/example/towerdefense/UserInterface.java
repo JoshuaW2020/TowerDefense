@@ -33,11 +33,15 @@ public class UserInterface {
         int buttonPadding = screenWidth / 100;
 
         Rect buyPlasmaTurret = new Rect(statsPadding, 15, statsPadding + buttonWidth, buttonHeight);
+        Rect buyLaserCannon = new Rect(statsPadding + buttonWidth + buttonPadding, 15, statsPadding + (buttonWidth * 2) + buttonPadding, buttonHeight);
+        Rect buyAntimatterRockets = new Rect(statsPadding + (buttonWidth * 2) + (buttonPadding * 2), 15, statsPadding + (buttonWidth * 3) + (buttonPadding * 2), buttonHeight );
 
         Rect pauseB = new Rect(screenWidth - buttonWidth - buttonPadding, 15, screenWidth - buttonPadding, buttonHeight);
 
         buyButtons = new ArrayList();
         buyButtons.add(buyPlasmaTurret);
+        buyButtons.add(buyLaserCannon);
+        buyButtons.add(buyAntimatterRockets);
         buyButtons.add(pauseB);
     }
 

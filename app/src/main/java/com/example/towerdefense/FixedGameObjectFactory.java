@@ -23,6 +23,9 @@ public class FixedGameObjectFactory {
                 return new PlasmaTurret(context, blockSize, screenSize);
 
             case Cannon:
+                return new LaserCannon(context, blockSize, screenSize);
+
+            case Rockets:
                 return null;
         }
 

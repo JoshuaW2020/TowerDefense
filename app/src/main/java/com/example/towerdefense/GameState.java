@@ -17,7 +17,7 @@ public class GameState {
 
     //Money
     private static int money = 10;
-    private int[] towerCost = {10, 25, 50, 100, 250};
+    private int[] towerCost = {10, 25, 50, 50, 150};
 
 
     //Tower being added
@@ -97,7 +97,6 @@ public class GameState {
                 break;
             }
             case Cannon: {
-                Log.w("Cannon", "Here");
                 if (money >= towerCost[1]) {
                     addingTower = true;
                     towerType = tower;
@@ -158,13 +157,13 @@ public class GameState {
             case Turret:
                 money += towerCost[0]; break;
             case Cannon:
-                money -= towerCost[1]; break;
+                money += towerCost[1]; break;
             case Emplacement:
-                money -= towerCost[2]; break;
+                money += towerCost[2]; break;
             case Rockets:
-                money -= towerCost[3]; break;
+                money += towerCost[3]; break;
             case Blackholes:
-                money -= towerCost[4]; break;
+                money += towerCost[4]; break;
             default: //do nothing
                 break;
         }
