@@ -56,7 +56,7 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
 
         super(context);
 
-        gameView = new GameView(this);
+        gameView = new GameView(this, context, screenSize);
 
         // Work out how many pixels each block is
         float blockSize = screenSize.x / NUM_BLOCKS_WIDE;
@@ -127,7 +127,7 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
         //Check if a tower is being created
         if (gameState.getAddingTower()) {
             if (gameState.getPlacedTower()) {
-                gameWorld.addTower(gameState.getTowerType(), gameState.getTowerPlacement());
+                gameWorld.addTower(gameState.getTowerType(), gameState.getTowerPlacement(), gameState);
 
                 //Now change game state to reflect tower placement
                 gameState.addedTower();

@@ -65,7 +65,7 @@ public class GameWorld {
     }
 
     //Created and place tower into game world
-    public void addTower(FixedObjectType towerType, Point location) {
+    public void addTower(FixedObjectType towerType, Point location, GameState gameState) {
 
         //Create the tower
         towers.add(fixedObjectFactory.build(towerType));
@@ -73,6 +73,16 @@ public class GameWorld {
         //Spawn tower where placed
         towers.get(towers.size() - 1).spawn(screenSize, location);
 
+        //If tower intersects with path, delete tower
+        for (Rect path : paths) {
+            if (towers.get(towers.size() - 1).getHitBox().intersect(path)) {
+
+                //Refund for tower
+                gameState.refundTower(towers.get(towers.size() - 1).getTowerType());
+                //Now remove tower
+                towers.remove(towers.size() - 1);
+            }
+        }
     }
 
     public void addDrones(GameState gameState, Level level) {

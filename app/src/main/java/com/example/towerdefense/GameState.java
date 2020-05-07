@@ -146,12 +146,28 @@ public class GameState {
                 break;
         }
 
-        Log.w("addedtower", "money:" + money);
-
         addingTower = false;
         towerType = null;
         placedTower = false;
         towerPlacement = null;
+    }
+
+    public void refundTower(FixedObjectType towerType) {
+
+        switch (towerType) {
+            case Turret:
+                money += towerCost[0]; break;
+            case Cannon:
+                money -= towerCost[1]; break;
+            case Emplacement:
+                money -= towerCost[2]; break;
+            case Rockets:
+                money -= towerCost[3]; break;
+            case Blackholes:
+                money -= towerCost[4]; break;
+            default: //do nothing
+                break;
+        }
     }
 
     public boolean getAddingTower() { return addingTower; }

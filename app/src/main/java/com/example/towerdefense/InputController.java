@@ -39,9 +39,8 @@ public class InputController implements InputObserver {
                 //If player tapped to buy plasma tower - button 1
                 if (buttons.get(0).contains(x, y)) {
                     gameState.addTower(Turret);
-
-
                 }
+                //If player is placing tower - can't be on the path
                 else if (gameState.getAddingTower()) {
                     Point placement = new Point(x, y);
                     gameState.placeTower(placement);

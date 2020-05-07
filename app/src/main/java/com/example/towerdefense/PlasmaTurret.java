@@ -10,6 +10,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import static com.example.towerdefense.FixedObjectType.Turret;
 import static com.example.towerdefense.MoveableObjectType.Plasma;
 
 public class PlasmaTurret extends FixedGameObject{
@@ -22,6 +23,7 @@ public class PlasmaTurret extends FixedGameObject{
     private Bitmap bitmap;
     private RectF rangeBox;
     private int range;
+    private FixedObjectType towerType;
 
     private MoveableGameObject bullet = null;
 
@@ -35,6 +37,8 @@ public class PlasmaTurret extends FixedGameObject{
         this.size = blockSize * 4;
 
         bulletFactory = new MoveableObjectFactory(context, blockSize, screenSize);
+
+        towerType = Turret;
 
         create(context);
     }
@@ -122,5 +126,7 @@ public class PlasmaTurret extends FixedGameObject{
         if (bullet != null)
             bullet.draw(canvas, paint);
     }
+
+    public FixedObjectType getTowerType() { return towerType; }
 
 }

@@ -1,8 +1,12 @@
 package com.example.towerdefense;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -11,11 +15,16 @@ public class GameView {
     private SurfaceHolder surfaceHolder;
     private Paint paint;
     private float defaultTextSize;
+    private Bitmap background;
 
-    GameView(SurfaceView surfaceHolder) {
+    GameView(SurfaceView surfaceHolder, Context context, Point screenSize) {
         this.surfaceHolder = surfaceHolder.getHolder();
         paint = new Paint();
         defaultTextSize = paint.getTextSize();
+
+        //Assign bitmap/scale design
+        this.background = BitmapFactory.decodeResource(context.getResources(), R.drawable.moon_map);
+        this.background = Bitmap.createScaledBitmap(background, screenSize.x, screenSize.y, false);
     }
 
     public void draw(GameWorld gameWorld, UserInterface UI, GameState gameState) {
@@ -25,7 +34,7 @@ public class GameView {
 
             //Draw background - simple for now (grey) - always want to display map background
             canvas = surfaceHolder.lockCanvas();
-            canvas.drawColor(Color.argb(255, 160, 160, 160));
+            canvas.drawBitmap(background, 0, 0, paint);
 
             //If playing game then draw everything without a main message
             if (!gameState.getGameOver()) {

@@ -40,5 +40,7 @@ public abstract class FixedGameObject {
     // Every object needs to draw itself
     abstract void draw(Canvas canvas, Paint paint);
 
+    abstract FixedObjectType getTowerType();
+
 
 }
