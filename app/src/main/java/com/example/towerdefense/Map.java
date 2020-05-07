@@ -23,13 +23,13 @@ public class Map {
 
         this.context = context;
         this.screenSize = screenSize;
-        this.blockSize = blockSize;
+        this.blockSize = blockSize * 2;
 
         path = new ArrayList();
         objectives = new ArrayList();
 
         //For now just create the path here
-        Rect path1 = new Rect(-20, screenSize.y / 2, screenSize.x + (int) blockSize, screenSize.y / 2 + (int) blockSize);
+        Rect path1 = new Rect(-20, screenSize.y / 2, screenSize.x + (int) this.blockSize, screenSize.y / 2 + (int) this.blockSize);
         Rect objective1 = new Rect(path1.right - (int) blockSize, path1.top, path1.right, path1.bottom);
 
         path.add(path1);

@@ -25,7 +25,7 @@ public class GameWorld {
     Context context;
 
     // The size in segments of the playable area
-    private final int NUM_BLOCKS_WIDE = 100;        //Make 100 blocks wide - arbitrary
+    private final int NUM_BLOCKS_WIDE = 75;        //Make 75 blocks wide - arbitrary
     private float NumBlocksHigh;
     Point screenSize;
     float blockSize;
@@ -188,7 +188,7 @@ public class GameWorld {
 
     public void drawObjects(Canvas canvas, Paint paint) {
 
-        paint.setColor(Color.argb(100, 0, 0, 0));
+        paint.setColor(Color.argb(100, 240, 255, 255));
 
         //Draw the path
         if (paths != null) {

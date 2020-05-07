@@ -35,7 +35,7 @@ public class CyborgSoldier extends MoveableGameObject {
 
     CyborgSoldier(Context context, float blockSize, Point screenSize) {
         super(Soldier);
-        this.size = blockSize;
+        this.size = blockSize * 2;
 
         create(context, screenSize);
     }
@@ -46,7 +46,7 @@ public class CyborgSoldier extends MoveableGameObject {
         resistance = 0;     //should make part of a strategy based on previous wave's resistance/tower damage
 
         //Assign bitmap/scale design
-        this.enemyImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.triangle_enemy);
+        this.enemyImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.cyborg_soldier_1);
         this.enemyImage = Bitmap.createScaledBitmap(enemyImage, (int)size, (int)size, false);
 
         //Assign movement strategy

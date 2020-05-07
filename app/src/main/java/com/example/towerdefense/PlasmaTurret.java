@@ -34,7 +34,7 @@ public class PlasmaTurret extends FixedGameObject{
     PlasmaTurret(Context context, float blockSize, Point screenSize) {
 
         // Size is 4 times the normal "block" size ie.80 pixels
-        this.size = blockSize * 4;
+        this.size = blockSize * 3;
 
         bulletFactory = new MoveableObjectFactory(context, blockSize, screenSize);
 
