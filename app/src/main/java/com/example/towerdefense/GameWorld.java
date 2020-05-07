@@ -15,6 +15,9 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.towerdefense.MoveableObjectType.Drone;
+import static com.example.towerdefense.MoveableObjectType.Soldier;
+
 //Will be holding the game world objects
 public class GameWorld {
 
@@ -30,9 +33,7 @@ public class GameWorld {
     private MoveableObjectFactory movingObjectsFactory;
     private FixedGameObjectFactory fixedObjectFactory;
 
-    private ArrayList<MoveableGameObject> drones;
-    private ArrayList<MoveableGameObject> soldiers;
-    private ArrayList<MoveableGameObject> behemoths;
+    private ArrayList<MoveableGameObject> enemies;
 
     //enemy path
     private ArrayList<Rect> paths;
@@ -50,9 +51,7 @@ public class GameWorld {
         this.blockSize = blockSize;
 
         //Initialize the Array lists of objects
-        drones = new ArrayList();
-        soldiers = new ArrayList();
-        behemoths = new ArrayList();
+        enemies = new ArrayList<>();
 
         towers = new ArrayList();
 
@@ -85,10 +84,10 @@ public class GameWorld {
         }
     }
 
-    public void addDrones(GameState gameState, Level level) {
-        drones.clear();
+    public void addEnemies(GameState gameState, Level level) {
+        enemies.clear();
 
-        drones = level.getWaveDrones(gameState);
+        enemies = level.getWaveEnemies(gameState);
 
         paths = level.getPath();
 
@@ -96,17 +95,29 @@ public class GameWorld {
 
     public void moveEnemies(long fps) {
         //Move all enemies
+        for (int i = 0; i < enemies.size(); i++) {
 
-        //Move drones
-        for (int i = 0; i < drones.size(); i++) {
-
+            //Move first enemy no matter what
             if (i == 0)
-                drones.get(i).move(fps);
-            else if (!RectF.intersects(drones.get(i - 1).getHitBox(), drones.get(i).getHitBox())) {
-                //If the earlier enemy is no longer intersecting the next enemy then allow next enemy to move
-                drones.get(i).move(fps);
+                enemies.get(i).move(fps);
+            //Move drones
+            else if (enemies.get(i).getEnemyType() == Drone) {
+                //If the earlier enemy is no longer intersecting the next enemy then allow next enemy to move (only if enemy before is of the same type)
+                if (enemies.get(i - 1).getEnemyType() != Drone)
+                    enemies.get(i).move(fps);
+                else if (!RectF.intersects(enemies.get(i - 1).getHitBox(), enemies.get(i).getHitBox()) && enemies.get(i - 1).getEnemyType() == Drone)
+                    enemies.get(i).move(fps);
 
             }
+            //Move soldiers
+            else if (enemies.get(i).getEnemyType() == Soldier) {
+                //If the earlier enemy is no longer intersecting the next enemy then allow next enemy to move (only if enemy before is of the same type)
+                if (enemies.get(i - 1).getEnemyType() != Soldier)
+                    enemies.get(i).move(fps);
+                else if (!RectF.intersects(enemies.get(i - 1).getHitBox(), enemies.get(i).getHitBox()) && enemies.get(i - 1).getEnemyType() == Soldier)
+                    enemies.get(i).move(fps);
+            }
+
         }
 
 
@@ -115,36 +126,36 @@ public class GameWorld {
     public void checkEnemies(GameState gameState, Level level) {
         //check all enemies to see bullet collisions/deaths and if they made it to the objective/base
 
-        for (int i = 0; i < drones.size(); i++) {
+        for (int i = 0; i < enemies.size(); i++) {
             for (FixedGameObject tower : towers) {
                 if (tower.getBullet() != null) {
-                    if (drones.get(i).bulletCollision(tower.getBullet())) {
+                    if (enemies.get(i).bulletCollision(tower.getBullet())) {
                         tower.deleteBullet();
                     }
                 }
             }
 
             //checks if enemy is dead
-            if (drones.get(i).getDead()) {
-                gameState.addMoney(drones.get(i).getWorth());
-                drones.remove(i);
+            if (enemies.get(i).getDead()) {
+                gameState.addMoney(enemies.get(i).getWorth());
+                enemies.remove(i);
             }
         }
 
-        for (int i = 0; i < drones.size(); i++) {
+        for (int i = 0; i < enemies.size(); i++) {
 
             //check if enemy made it to first objective
-            if (level.getObjective(0).contains( (int) drones.get(i).getHitBox().centerX(), (int) drones.get(i).getHitBox().centerY())) {
+            if (level.getObjective(0).contains( (int) enemies.get(i).getHitBox().centerX(), (int) enemies.get(i).getHitBox().centerY())) {
                 //check how many objectives there are - if > 1 -> set next target
                 if (level.getNumOfObjectives() > 1) {
-                    drones.get(i).markTarget(level.getObjectivePoint(i));
+                    enemies.get(i).markTarget(level.getObjectivePoint(i));
                 }
                 //Checks if enemy made it to base ie.right side of map
-                else if (drones.get(i).getHitBox().left >= screenSize.x) {
+                else if (enemies.get(i).getHitBox().left >= screenSize.x) {
                     gameState.loseHP();
 
                     // and delete the enemy that made it
-                    drones.remove(i);
+                    enemies.remove(i);
                 }
             }
 
@@ -153,23 +164,23 @@ public class GameWorld {
     }
 
     public int getEnemies() {
-        return drones.size() + soldiers.size() + behemoths.size();
+        return enemies.size();
     }
 
     public void towersShoot() {
 
-        if (drones.size() >= 1) {
+        if (enemies.size() >= 1) {
             for (FixedGameObject tower : towers) {
-                tower.shotCheck(drones.get(0).getHitBox());
+                tower.shotCheck(enemies.get(0).getHitBox());
             }
         }
     }
 
     public void moveBullets(long fps) {
 
-        if (!drones.isEmpty()) {
+        if (!enemies.isEmpty()) {
             for (FixedGameObject tower : towers) {
-                tower.moveBullets(fps, drones.get(0).getHitBox());
+                tower.moveBullets(fps, enemies.get(0).getHitBox());
             }
         }
 
@@ -189,14 +200,8 @@ public class GameWorld {
         paint.setColor(Color.argb(255, 160, 160, 160));
 
         //Draw the different enemies
-        for (MoveableGameObject drone : drones) {
-            drone.draw(canvas, paint);
-        }
-        for (MoveableGameObject soldier : soldiers) {
-            soldier.draw(canvas, paint);
-        }
-        for (MoveableGameObject behemoth : behemoths) {
-            behemoth.draw(canvas, paint);
+        for (MoveableGameObject enemy : enemies) {
+            enemy.draw(canvas, paint);
         }
 
         //Now draw the towers / bullets

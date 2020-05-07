@@ -1,19 +1,11 @@
 package com.example.towerdefense;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.PointF;
-import android.os.Build;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 // Acts as the top level controller calling on GameWorld for the objects and telling things what to do
 class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
@@ -115,11 +107,11 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
                 gameState.nextLevel();
                 //Reset Waves
                 gameState.resetWaves();
+                gameState.nextWave();
             }
 
             //Spawn next wave of enemies
-            gameWorld.addDrones(gameState, level);
-            //gameWorld.addSoldiers(gameState, level);
+            gameWorld.addEnemies(gameState, level);
 
 
         }

@@ -61,6 +61,8 @@ public abstract class MoveableGameObject {
     // Every object needs to draw itself
     abstract void draw(Canvas canvas, Paint paint);
 
+    public MoveableObjectType getEnemyType() { return null; }
+
     public void attach(EnemyObserver observer) {
         observers.add(observer);
     }

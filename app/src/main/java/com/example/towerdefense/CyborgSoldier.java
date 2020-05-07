@@ -8,13 +8,12 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.towerdefense.MoveableObjectType.Drone;
+import static com.example.towerdefense.MoveableObjectType.Soldier;
 
-public class CyborgDrone extends MoveableGameObject {
+public class CyborgSoldier extends MoveableGameObject {
 
     private int health;
     private int speed;
@@ -34,17 +33,17 @@ public class CyborgDrone extends MoveableGameObject {
     private MovementStrategyFactory movementStrategyFactory;
     private MovementStrategy movementStrategy;
 
-    CyborgDrone(Context context, float blockSize, Point screenSize) {
-        super(Drone);
+    CyborgSoldier(Context context, float blockSize, Point screenSize) {
+        super(Soldier);
         this.size = blockSize;
 
         create(context, screenSize);
     }
 
     private void create(Context context, Point screenSize) {
-        health = 16;
-        speed = 75;         //will make speed a part of the movement strategy later
-        resistance = 0;     //should also make part of a strategy based on previous wave's resistance/tower damage
+        health = 30;        //Medium hp
+        speed = 50;         //Medium speed
+        resistance = 0;     //should make part of a strategy based on previous wave's resistance/tower damage
 
         //Assign bitmap/scale design
         this.enemyImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.triangle_enemy);
@@ -52,13 +51,13 @@ public class CyborgDrone extends MoveableGameObject {
 
         //Assign movement strategy
         movementStrategyFactory = new MovementStrategyFactory(screenSize);
-        movementStrategy = movementStrategyFactory.getStrategy(Drone);
+        movementStrategy = movementStrategyFactory.getStrategy(Soldier);
 
         //hit box is a square box
         hitBox = new RectF();
 
         dead = false;
-        worth = 2;
+        worth = 5; //Worth medium amount
 
     }
 
@@ -144,7 +143,7 @@ public class CyborgDrone extends MoveableGameObject {
         hitBox.set(location.x, location.y, location.x + size, location.y + size);
     }
 
-    public MoveableObjectType getEnemyType() { return Drone; }
+    public MoveableObjectType getEnemyType() { return Soldier; }
 
     public void attach(EnemyObserver observer) {
         observers.add(observer);

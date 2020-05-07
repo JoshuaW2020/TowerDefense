@@ -22,8 +22,7 @@ public class MoveableObjectFactory {
                 return new CyborgDrone(context, blockSize, screenSize);
 
             case Soldier:
-                ;
-                break;
+                return new CyborgSoldier(context, blockSize,screenSize);
 
             case Behemoth:
                 ;

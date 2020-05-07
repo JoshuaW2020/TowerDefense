@@ -40,7 +40,7 @@ public class RocketBullet extends MoveableGameObject {
     private void create(Context context) {
 
         //Medium damage
-        damage = 14;
+        damage = 16;
         speed = 500;
 
         //Assign bitmap/scale design

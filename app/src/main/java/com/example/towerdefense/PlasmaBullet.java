@@ -39,7 +39,7 @@ public class PlasmaBullet extends MoveableGameObject {
 
     private void create(Context context) {
 
-        damage = 8;
+        damage = 6;
         speed = 800;
 
         //Assign bitmap/scale design
