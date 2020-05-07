@@ -48,7 +48,7 @@ public class InputController implements InputObserver {
                 }
                 //If player tapped to buy Rockets tower - button 3
                 else if (buttons.get(2).contains(x, y)) {
-                    ;
+                    gameState.addTower(Rockets);
                 }
                 //If player is placing tower - can't be on the path
                 else if (gameState.getAddingTower()) {

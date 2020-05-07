@@ -76,12 +76,15 @@ public class PlasmaTurret extends FixedGameObject{
     }
 
     private void shoot(RectF enemy) {
-        //Now create/spawn a bullet of tower type
-        bullet = bulletFactory.build(Plasma);
-        bullet.spawn(new PointF(location.x - 10, location.y - 10));
-        bullet.markTarget(new PointF(enemy.centerX(), enemy.centerY()));
+        //Now create/spawn a bullet of tower type - if bullet doesn't already exist
+        if (bullet == null) {
+            bullet = bulletFactory.build(Plasma);
+            bullet.spawn(new PointF(location.x - 10, location.y - 10));
+            bullet.markTarget(new PointF(enemy.centerX(), enemy.centerY()));
 
-        reloading = 0;
+
+            reloading = 0;
+        }
     }
 
     public MoveableGameObject getBullet() { return bullet; }

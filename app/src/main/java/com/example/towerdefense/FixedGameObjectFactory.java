@@ -26,7 +26,7 @@ public class FixedGameObjectFactory {
                 return new LaserCannon(context, blockSize, screenSize);
 
             case Rockets:
-                return null;
+                return new AntimatterRockets(context,blockSize,screenSize);
         }
 
         return null;

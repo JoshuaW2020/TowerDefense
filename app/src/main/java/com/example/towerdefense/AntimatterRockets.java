@@ -10,10 +10,10 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
-import static com.example.towerdefense.FixedObjectType.Cannon;
-import static com.example.towerdefense.MoveableObjectType.Laser;
+import static com.example.towerdefense.FixedObjectType.Rockets;
+import static com.example.towerdefense.MoveableObjectType.Rocket;
 
-public class LaserCannon extends FixedGameObject {
+public class AntimatterRockets extends FixedGameObject {
 
     private float size;
     private Point location;
@@ -31,26 +31,26 @@ public class LaserCannon extends FixedGameObject {
 
 
 
-    LaserCannon(Context context, float blockSize, Point screenSize) {
+    AntimatterRockets(Context context, float blockSize, Point screenSize) {
 
         // Size is 4 times the normal "block" size ie.80 pixels
         this.size = blockSize * 4;
 
         bulletFactory = new MoveableObjectFactory(context, blockSize, screenSize);
 
-        towerType = Cannon;
+        towerType = Rockets;
 
         create(context);
     }
 
     private void create(Context context) {
 
-        //Long shot speed
-        shotSpeed = 200;
+        //Medium shot speed
+        shotSpeed = 100;
         reloading = 0;
 
-        //Huge range
-        range = 1200;
+        //Medium range
+        range = 750;
 
         //Assign bitmap/scale design
         this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.tower);
@@ -78,9 +78,9 @@ public class LaserCannon extends FixedGameObject {
     }
 
     private void shoot(RectF enemy) {
-        //Now create/spawn a bullet of tower type - if bullet doesn't already exist
+        //Now create/spawn a bullet of tower type - if bullet doesnt already exist
         if (bullet == null) {
-            bullet = bulletFactory.build(Laser);
+            bullet = bulletFactory.build(Rocket);
             bullet.spawn(new PointF(location.x - 10, location.y - 10));
             bullet.markTarget(new PointF(enemy.centerX(), enemy.centerY()));
 
@@ -94,6 +94,7 @@ public class LaserCannon extends FixedGameObject {
 
         if (bullet != null) {
 
+            bullet.markTarget(new PointF(enemy.centerX(), enemy.centerY()));
 
             bullet.move(fps);
 

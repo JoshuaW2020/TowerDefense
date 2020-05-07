@@ -9,9 +9,9 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
-import static com.example.towerdefense.MoveableObjectType.Laser;
+import static com.example.towerdefense.MoveableObjectType.Rocket;
 
-public class LaserBullet extends MoveableGameObject {
+public class RocketBullet extends MoveableGameObject {
 
     private float size;
     private PointF location;
@@ -28,9 +28,9 @@ public class LaserBullet extends MoveableGameObject {
     private MovementStrategy movementStrategy;
 
 
-    LaserBullet(Context context, float blockSize, Point screenSize) {
+    RocketBullet(Context context, float blockSize, Point screenSize) {
 
-        super(Laser);
+        super(Rocket);
         this.size = blockSize / 2;  //Half the regular block size
         this.screenSize = screenSize;
 
@@ -39,9 +39,9 @@ public class LaserBullet extends MoveableGameObject {
 
     private void create(Context context) {
 
-        //Massive damage
-        damage = 40;
-        speed = 1000;
+        //Medium damage
+        damage = 14;
+        speed = 500;
 
         //Assign bitmap/scale design
         this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet);
@@ -49,7 +49,7 @@ public class LaserBullet extends MoveableGameObject {
 
         //Assign movement strategy
         movementStrategyFactory = new MovementStrategyFactory(screenSize);
-        movementStrategy = movementStrategyFactory.getStrategy(Laser);
+        movementStrategy = movementStrategyFactory.getStrategy(Rocket);
 
         hitBox = new RectF();
 
@@ -108,4 +108,5 @@ public class LaserBullet extends MoveableGameObject {
         canvas.drawBitmap(bitmap, location.x, location.y, paint);
 
     }
+
 }

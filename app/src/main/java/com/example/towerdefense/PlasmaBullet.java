@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.util.Log;
 
 import static com.example.towerdefense.MoveableObjectType.Plasma;
 
@@ -40,8 +39,8 @@ public class PlasmaBullet extends MoveableGameObject {
 
     private void create(Context context) {
 
-        damage = 6;
-        speed = 1000;
+        damage = 8;
+        speed = 800;
 
         //Assign bitmap/scale design
         this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet);

@@ -36,7 +36,7 @@ public class MoveableObjectFactory {
                 return new LaserBullet(context, blockSize, screenSize);
 
             case Rocket:
-                return null;
+                return new RocketBullet(context, blockSize, screenSize);
 
             default:
                 //Exception: no compatible type found
