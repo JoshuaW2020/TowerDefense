@@ -29,13 +29,23 @@ public class Map {
         objectives = new ArrayList();
 
         //For now just create the path here
-        Rect path1 = new Rect(-20, screenSize.y / 2, screenSize.x + (int) this.blockSize, screenSize.y / 2 + (int) this.blockSize);
+        Rect path1 = new Rect(-20, screenSize.y / 2, (screenSize.x / 2) + (int) this.blockSize, screenSize.y / 2 + (int) this.blockSize);
         Rect objective1 = new Rect(path1.right - (int) blockSize, path1.top, path1.right, path1.bottom);
+
+        Rect path2 = new Rect(path1.right - (int) this.blockSize, screenSize.y / 2, path1.right, screenSize.y / 2 + 300 + (int) this.blockSize);
+        Rect objective2 = new Rect(path2.left, path2.bottom - (int) this.blockSize, path2.right, path2.bottom);
+
+        Rect path3 = new Rect(path2.left, path2.bottom - (int) this.blockSize, screenSize.x + (int) this.blockSize, path2.bottom);
+        Rect objective3 = new Rect(path3.right - (int) this.blockSize, path3.top, path3.right, path3.bottom);
 
         path.add(path1);
         objectives.add(objective1);
 
+        path.add(path2);
+        objectives.add(objective2);
 
+        path.add(path3);
+        objectives.add(objective3);
     }
 
     public ArrayList<Rect> getPath() { return path; }
@@ -46,7 +56,7 @@ public class Map {
 
     public int getNumOfObjectives() { return objectives.size(); }
 
-    public PointF getObjectivePoint(int i) { return new PointF(objectives.get(i).centerX(), objectives.get(i).centerY()); }
+    public PointF getObjectivePoint(int i) { return new PointF(objectives.get(i).centerX() - (this.blockSize / 2), objectives.get(i).centerY() - (this.blockSize / 2)); }
 
 }
 

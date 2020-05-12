@@ -42,7 +42,7 @@ public class CyborgBehemoth extends MoveableGameObject {
     }
 
     private void create(Context context, Point screenSize) {
-        health = 50;        //Lots of HP
+        health = 120;        //Lots of HP
         speed = 40;         //SLOW
         resistance = 0;     //should make part of a strategy based on previous wave's resistance/tower damage
 

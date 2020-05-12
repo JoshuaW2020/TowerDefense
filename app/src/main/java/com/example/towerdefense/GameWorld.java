@@ -148,7 +148,37 @@ public class GameWorld {
             if (level.getObjective(0).contains( (int) enemies.get(i).getHitBox().centerX(), (int) enemies.get(i).getHitBox().centerY())) {
                 //check how many objectives there are - if > 1 -> set next target
                 if (level.getNumOfObjectives() > 1) {
-                    enemies.get(i).markTarget(level.getObjectivePoint(i));
+                    enemies.get(i).markTarget(level.getObjectivePoint(1));
+                }
+                //Checks if enemy made it to base ie.right side of map
+                else if (enemies.get(i).getHitBox().left >= screenSize.x) {
+                    gameState.loseHP();
+
+                    // and delete the enemy that made it
+                    enemies.remove(i);
+                }
+            }
+
+            //check if enemy made it to second objective
+            if (level.getObjective(1).contains( (int) enemies.get(i).getHitBox().left, (int) enemies.get(i).getHitBox().top)) {
+                //check how many objectives there are - if > 2 -> set next target
+                if (level.getNumOfObjectives() > 2) {
+                    enemies.get(i).markTarget(level.getObjectivePoint(2));
+                }
+                //Checks if enemy made it to base ie.right side of map
+                else if (enemies.get(i).getHitBox().left >= screenSize.x) {
+                    gameState.loseHP();
+
+                    // and delete the enemy that made it
+                    enemies.remove(i);
+                }
+            }
+
+            //check if enemy made it to third objective
+            if (level.getObjective(2).contains( (int) enemies.get(i).getHitBox().centerX(), (int) enemies.get(i).getHitBox().centerY())) {
+                //check how many objectives there are - if > 2 -> set next target
+                if (level.getNumOfObjectives() > 3) {
+                    enemies.get(i).markTarget(level.getObjectivePoint(3));
                 }
                 //Checks if enemy made it to base ie.right side of map
                 else if (enemies.get(i).getHitBox().left >= screenSize.x) {
