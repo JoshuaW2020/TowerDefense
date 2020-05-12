@@ -25,8 +25,7 @@ public class MoveableObjectFactory {
                 return new CyborgSoldier(context, blockSize,screenSize);
 
             case Behemoth:
-                ;
-                break;
+                return new CyborgBehemoth(context, blockSize, screenSize);
 
             case Plasma:
                 return new PlasmaBullet(context, blockSize, screenSize);
@@ -41,6 +40,5 @@ public class MoveableObjectFactory {
                 //Exception: no compatible type found
                 return null;
         }
-        return null;
     }
 }

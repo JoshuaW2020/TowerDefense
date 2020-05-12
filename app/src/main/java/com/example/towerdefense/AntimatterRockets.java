@@ -53,7 +53,7 @@ public class AntimatterRockets extends FixedGameObject {
         range = 750;
 
         //Assign bitmap/scale design
-        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.tower);
+        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.rocket_turret);
         this.bitmap = Bitmap.createScaledBitmap(bitmap, (int)size, (int)size, false);
 
         hitBox = new Rect();

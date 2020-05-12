@@ -43,7 +43,7 @@ public class PlasmaBullet extends MoveableGameObject {
         speed = 800;
 
         //Assign bitmap/scale design
-        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet);
+        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.plasma_bullet_1);
         this.bitmap = Bitmap.createScaledBitmap(bitmap, (int)size, (int)size, false);
 
         //Assign movement strategy

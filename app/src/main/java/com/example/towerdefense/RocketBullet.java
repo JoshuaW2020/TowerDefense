@@ -31,7 +31,7 @@ public class RocketBullet extends MoveableGameObject {
     RocketBullet(Context context, float blockSize, Point screenSize) {
 
         super(Rocket);
-        this.size = blockSize / 2;  //Half the regular block size
+        this.size = blockSize;  //Half the regular block size
         this.screenSize = screenSize;
 
         create(context);
@@ -44,7 +44,7 @@ public class RocketBullet extends MoveableGameObject {
         speed = 500;
 
         //Assign bitmap/scale design
-        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet);
+        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.rocket_bullet);
         this.bitmap = Bitmap.createScaledBitmap(bitmap, (int)size, (int)size, false);
 
         //Assign movement strategy

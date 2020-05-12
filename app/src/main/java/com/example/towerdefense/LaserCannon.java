@@ -53,7 +53,7 @@ public class LaserCannon extends FixedGameObject {
         range = 1200;
 
         //Assign bitmap/scale design
-        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.tower);
+        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.laser_turret);
         this.bitmap = Bitmap.createScaledBitmap(bitmap, (int)size, (int)size, false);
 
         hitBox = new Rect();

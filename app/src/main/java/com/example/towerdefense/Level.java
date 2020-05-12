@@ -75,7 +75,7 @@ public class Level {
         //Create Soldiers = 1 * (level - 1) * wave
         int enemiesSize = enemies.size();
         for (int i = enemiesSize; i < (enemiesSize + 1 * gameState.getWave() * (gameState.getLevel() - 1)); i++) {
-            enemies.add(movingObjectsFactory.build(MoveableObjectType.Soldier));
+            enemies.add(movingObjectsFactory.build(Soldier));
 
             if (enemies.get(i).getEnemyType() == Soldier) {
                 enemies.get(i).spawn(map.getSpawnPoint());
@@ -85,8 +85,21 @@ public class Level {
 
                 enemies.get(i).markTarget(map.getObjectivePoint(0));
             }
+        }
 
-            Log.w("Drone", "created soldier: " + i);
+        //Create Behemoths = 1 * (level - 1) * (wave / 2)
+        enemiesSize = enemies.size();
+        for (int i = enemiesSize; i < (enemiesSize + 1 * (gameState.getWave() / 2) * (gameState.getLevel() - 1)); i++) {
+            enemies.add(movingObjectsFactory.build(Behemoth));
+
+            if (enemies.get(i).getEnemyType() == Behemoth) {
+                enemies.get(i).spawn(map.getSpawnPoint());
+
+                x = map.getSpawnPoint().x;
+                enemies.get(i).updateStartLocation(x - 20);
+
+                enemies.get(i).markTarget(map.getObjectivePoint(0));
+            }
         }
 
         return enemies;

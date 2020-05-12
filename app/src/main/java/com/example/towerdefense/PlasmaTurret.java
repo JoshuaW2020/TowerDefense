@@ -51,7 +51,7 @@ public class PlasmaTurret extends FixedGameObject{
         range = 400;
 
         //Assign bitmap/scale design
-        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.tower);
+        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.plasma_turret);
         this.bitmap = Bitmap.createScaledBitmap(bitmap, (int)size, (int)size, false);
 
         hitBox = new Rect();

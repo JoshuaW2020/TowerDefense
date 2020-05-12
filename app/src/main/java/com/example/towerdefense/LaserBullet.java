@@ -44,7 +44,7 @@ public class LaserBullet extends MoveableGameObject {
         speed = 1000;
 
         //Assign bitmap/scale design
-        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet);
+        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.laser_bullet);
         this.bitmap = Bitmap.createScaledBitmap(bitmap, (int)size, (int)size, false);
 
         //Assign movement strategy
