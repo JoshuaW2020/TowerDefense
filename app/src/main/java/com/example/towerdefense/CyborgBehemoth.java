@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
@@ -25,6 +26,7 @@ public class CyborgBehemoth extends MoveableGameObject {
     private PointF target;
     private float size;                   //size of enemy on screen - a specific block/square size
     private Bitmap enemyImage;
+    private Bitmap rotatedEnemy;
     private PointF location = new PointF();   // current location on screen
     private RectF hitBox;
 
@@ -82,6 +84,19 @@ public class CyborgBehemoth extends MoveableGameObject {
 
     @Override
     public void markTarget(PointF target) {
+
+        //Calculate the angle to enemy - similar to heading
+        int angle = (int) Math.toDegrees(Math.atan2(target.y - location.y, target.x - location.x + 10));
+
+        angle += 90;
+        //Log.w("Debug:", "angle:" + angle);
+        //Rotate turret to look at enemy
+        Matrix matrix = new Matrix();
+        matrix.setTranslate(-size/2, -size/2);
+        matrix.postRotate(angle);
+        matrix.postTranslate(enemyImage.getWidth()/2, enemyImage.getHeight()/2);
+        rotatedEnemy = Bitmap.createBitmap(enemyImage, 0, 0, enemyImage.getWidth(), enemyImage.getHeight(), matrix, true);
+
         this.target = target;
 
         getHeading();
@@ -135,7 +150,7 @@ public class CyborgBehemoth extends MoveableGameObject {
 
     public void draw(Canvas canvas, Paint paint) {
 
-        canvas.drawBitmap(enemyImage, location.x, location.y, paint);
+        canvas.drawBitmap(rotatedEnemy, location.x, location.y, paint);
 
     }
 

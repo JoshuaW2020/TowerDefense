@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
@@ -21,6 +22,7 @@ public class LaserCannon extends FixedGameObject {
     private int shotSpeed;
     private int reloading;
     private Bitmap bitmap;
+    private Bitmap rotatedBitmap;
     private RectF rangeBox;
     private int range;
     private FixedObjectType towerType;
@@ -61,7 +63,20 @@ public class LaserCannon extends FixedGameObject {
 
     }
 
+
     public void shotCheck(RectF enemy) {
+
+        //Calculate the angle to enemy - similar to heading
+        int angle = (int) Math.toDegrees(Math.atan2(enemy.centerY() - location.y, enemy.centerX() - location.x + 10));
+
+        angle += 90;
+
+        //Rotate turret to look at enemy
+        Matrix matrix = new Matrix();
+        matrix.setTranslate(-size/2, -size/2);
+        matrix.postRotate(angle);
+        matrix.postTranslate(bitmap.getWidth()/2, bitmap.getHeight()/2);
+        rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
         //Increase reload and check if tower can shoot
         reloading++;
@@ -81,7 +96,7 @@ public class LaserCannon extends FixedGameObject {
         //Now create/spawn a bullet of tower type - if bullet doesn't already exist
         if (bullet == null) {
             bullet = bulletFactory.build(Laser);
-            bullet.spawn(new PointF(location.x - 10, location.y - 10));
+            bullet.spawn(new PointF(hitBox.centerX(), hitBox.centerY()));
             bullet.markTarget(new PointF(enemy.centerX(), enemy.centerY()));
 
             reloading = 0;
@@ -125,10 +140,12 @@ public class LaserCannon extends FixedGameObject {
     }
 
     void draw(Canvas canvas, Paint paint) {
-        canvas.drawBitmap(bitmap, location.x, location.y, paint);
-
+        //Draw the bullet
         if (bullet != null)
             bullet.draw(canvas, paint);
+
+        //Draw the tower
+        canvas.drawBitmap(rotatedBitmap, location.x, location.y, paint);
     }
 
     public FixedObjectType getTowerType() { return towerType; }
