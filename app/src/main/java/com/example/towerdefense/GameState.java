@@ -40,7 +40,7 @@ public class GameState {
         wave = 0;
         level = 1;
         baseHP = 20;
-        money = 1000; // changed to 1000 for testing purposes
+        money = 1000; // change to 1000 for testing purposes
 
         firstGame = false;
         resume();

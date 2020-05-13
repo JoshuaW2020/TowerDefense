@@ -15,6 +15,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.towerdefense.MoveableObjectType.Behemoth;
 import static com.example.towerdefense.MoveableObjectType.Drone;
 import static com.example.towerdefense.MoveableObjectType.Soldier;
 
@@ -115,6 +116,14 @@ public class GameWorld {
                 if (enemies.get(i - 1).getEnemyType() != Soldier)
                     enemies.get(i).move(fps);
                 else if (!RectF.intersects(enemies.get(i - 1).getHitBox(), enemies.get(i).getHitBox()) && enemies.get(i - 1).getEnemyType() == Soldier)
+                    enemies.get(i).move(fps);
+            }
+            //Move behemoths
+            else if (enemies.get(i).getEnemyType() == Behemoth) {
+                //If the earlier enemy is no longer intersecting the next enemy then allow next enemy to move (only if enemy before is of the same type)
+                if (enemies.get(i - 1).getEnemyType() != Behemoth)
+                    enemies.get(i).move(fps);
+                else if (!RectF.intersects(enemies.get(i - 1).getHitBox(), enemies.get(i).getHitBox()) && enemies.get(i - 1).getEnemyType() == Behemoth)
                     enemies.get(i).move(fps);
             }
 

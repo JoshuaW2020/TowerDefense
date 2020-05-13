@@ -81,7 +81,7 @@ public class Level {
                 enemies.get(i).spawn(map.getSpawnPoint());
 
                 x = map.getSpawnPoint().x;
-                enemies.get(i).updateStartLocation(x - 20);
+                enemies.get(i).updateStartLocation(x - 10);
 
                 enemies.get(i).markTarget(map.getObjectivePoint(0));
             }
@@ -96,7 +96,7 @@ public class Level {
                 enemies.get(i).spawn(map.getSpawnPoint());
 
                 x = map.getSpawnPoint().x;
-                enemies.get(i).updateStartLocation(x - 20);
+                enemies.get(i).updateStartLocation(x - 5);
 
                 enemies.get(i).markTarget(map.getObjectivePoint(0));
             }
