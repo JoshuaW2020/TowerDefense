@@ -52,7 +52,7 @@ public class AntimatterRockets extends FixedGameObject {
         reloading = 0;
 
         //Medium range
-        range = 750;
+        range = 600;
 
         //Assign bitmap/scale design
         this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.rocket_turret);
@@ -67,7 +67,7 @@ public class AntimatterRockets extends FixedGameObject {
     public void shotCheck(RectF enemy) {
 
         //Calculate the angle to enemy - similar to heading
-        int angle = (int) Math.toDegrees(Math.atan2(enemy.centerY() - location.y, enemy.centerX() - location.x + 10));
+        int angle = (int) Math.toDegrees(Math.atan2(enemy.centerY() - hitBox.centerY(), enemy.centerX() - hitBox.centerX()));
 
         angle += 90;
 

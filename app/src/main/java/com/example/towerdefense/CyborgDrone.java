@@ -45,7 +45,7 @@ public class CyborgDrone extends MoveableGameObject {
 
     private void create(Context context, Point screenSize) {
         health = 16;
-        speed = 75;         //will make speed a part of the movement strategy later
+        speed = 90;         //will make speed a part of the movement strategy later
         resistance = 0;     //should also make part of a strategy based on previous wave's resistance/tower damage
 
         //Assign bitmap/scale design

@@ -44,7 +44,7 @@ public class CyborgSoldier extends MoveableGameObject {
 
     private void create(Context context, Point screenSize) {
         health = 30;        //Medium hp
-        speed = 50;         //Medium speed
+        speed = 60;         //Medium speed
         resistance = 0;     //should make part of a strategy based on previous wave's resistance/tower damage
 
         //Assign bitmap/scale design

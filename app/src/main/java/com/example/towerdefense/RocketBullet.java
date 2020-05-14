@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
@@ -22,6 +23,7 @@ public class RocketBullet extends MoveableGameObject {
     private PointF target;
     private RectF hitBox;
     private Bitmap bitmap;
+    private Bitmap rotatedBitmap;
 
     //Movement strategy
     private MovementStrategyFactory movementStrategyFactory;
@@ -41,7 +43,7 @@ public class RocketBullet extends MoveableGameObject {
 
         //Medium damage
         damage = 16;
-        speed = 500;
+        speed = 300;
 
         //Assign bitmap/scale design
         this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.rocket_bullet);
@@ -62,6 +64,19 @@ public class RocketBullet extends MoveableGameObject {
     }
 
     public void markTarget(PointF target) {
+
+        //Calculate the angle to enemy - similar to heading
+        int angle = (int) Math.toDegrees(Math.atan2(target.y - location.y, target.x - location.x + 10));
+
+        angle += 90;
+        //Log.w("Debug:", "angle:" + angle);
+        //Rotate turret to look at enemy
+        Matrix matrix = new Matrix();
+        matrix.setTranslate(-size/2, -size/2);
+        matrix.postRotate(angle);
+        matrix.postTranslate(bitmap.getWidth()/2, bitmap.getHeight()/2);
+        rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
         this.target = target;
 
         getHeading();
@@ -105,7 +120,7 @@ public class RocketBullet extends MoveableGameObject {
 
     public void draw(Canvas canvas, Paint paint) {
 
-        canvas.drawBitmap(bitmap, location.x, location.y, paint);
+        canvas.drawBitmap(rotatedBitmap, location.x, location.y, paint);
 
     }
 

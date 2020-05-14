@@ -1,5 +1,8 @@
 package com.example.towerdefense;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,27 +17,33 @@ public class UserInterface {
     private int screenHeight;
     private int screenWidth;
 
+    private int statsPadding;
+    private int buttonWidth;
+    private int buttonHeight;
+    private int buttonPadding;
+
     private ArrayList<Rect> buyButtons;
+    private ArrayList<Bitmap> buttonBitmaps;
 
 
-    UserInterface(Point screenSize) {
+    UserInterface(Point screenSize, Context context) {
         //Set the screen height/width/text size
         screenHeight = screenSize.y;
         screenWidth = screenSize.x;
         textSize = screenSize.x / 25; // 50 is arbitrary
 
-        createBuyButtons();
+        createBuyButtons(context);
     }
 
-    private void createBuyButtons() {
-        int statsPadding = textSize * 8;
-        int buttonWidth = screenWidth / 14;
-        int buttonHeight = screenHeight / 9;
-        int buttonPadding = screenWidth / 100;
+    private void createBuyButtons(Context context) {
+        statsPadding = textSize * 8;
+        buttonWidth = screenWidth / 14;
+        buttonHeight = screenHeight / 9;
+        buttonPadding = screenWidth / 100;
 
-        Rect buyPlasmaTurret = new Rect(statsPadding, 15, statsPadding + buttonWidth, buttonHeight);
-        Rect buyLaserCannon = new Rect(statsPadding + buttonWidth + buttonPadding, 15, statsPadding + (buttonWidth * 2) + buttonPadding, buttonHeight);
-        Rect buyAntimatterRockets = new Rect(statsPadding + (buttonWidth * 2) + (buttonPadding * 2), 15, statsPadding + (buttonWidth * 3) + (buttonPadding * 2), buttonHeight );
+        Rect buyPlasmaTurret = new Rect(statsPadding, 15, statsPadding + buttonWidth, 15 + buttonHeight);
+        Rect buyLaserCannon = new Rect(statsPadding + buttonWidth + buttonPadding, 15, statsPadding + (buttonWidth * 2) + buttonPadding, 15 +buttonHeight);
+        Rect buyAntimatterRockets = new Rect(statsPadding + (buttonWidth * 2) + (buttonPadding * 2), 15, statsPadding + (buttonWidth * 3) + (buttonPadding * 2), 15 + buttonHeight);
 
         Rect pauseB = new Rect(screenWidth - buttonWidth - buttonPadding, 15, screenWidth - buttonPadding, buttonHeight);
 
@@ -43,6 +52,21 @@ public class UserInterface {
         buyButtons.add(buyLaserCannon);
         buyButtons.add(buyAntimatterRockets);
         buyButtons.add(pauseB);
+
+        //Assign bitmap/scale design
+        Bitmap button1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.plasma_turret);
+        button1 = Bitmap.createScaledBitmap(button1, buttonWidth, buttonHeight, false);
+
+        Bitmap button2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.laser_turret);
+        button2 = Bitmap.createScaledBitmap(button2, buttonWidth, buttonHeight, false);
+
+        Bitmap button3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.rocket_turret);
+        button3 = Bitmap.createScaledBitmap(button3, buttonWidth, buttonHeight, false);
+
+        buttonBitmaps = new ArrayList();
+        buttonBitmaps.add(button1);
+        buttonBitmaps.add(button2);
+        buttonBitmaps.add(button3);
     }
 
     public void draw(Canvas canvas, Paint paint, GameState gameState) {
@@ -104,9 +128,12 @@ public class UserInterface {
         //Set custom color for buttons
         paint.setColor(Color.argb(100, 255, 255, 255));
 
-        for(Rect button : buyButtons) {
-            canvas.drawRect(button, paint);
+        for (int i = 0; i < buyButtons.size() - 1; i++) {
+            canvas.drawBitmap(buttonBitmaps.get(i), buyButtons.get(i).centerX() - (buttonWidth / 2), buyButtons.get(i).centerY() - (buttonWidth / 2), paint);
         }
+
+        // Draw pause
+        canvas.drawRect(buyButtons.get(3), paint);
 
         //Set colors back
         paint.setColor(Color.argb(255, 255, 255, 255));

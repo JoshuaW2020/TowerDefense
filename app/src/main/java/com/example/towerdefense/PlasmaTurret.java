@@ -51,7 +51,7 @@ public class PlasmaTurret extends FixedGameObject{
         shotSpeed = 50;
         reloading = 0;
 
-        range = 400;
+        range = 300;
 
         //Assign bitmap/scale design
         this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.plasma_turret);
@@ -65,7 +65,7 @@ public class PlasmaTurret extends FixedGameObject{
     public void shotCheck(RectF enemy) {
 
         //Calculate the angle to enemy - similar to heading
-        int angle = (int) Math.toDegrees(Math.atan2(enemy.centerY() - location.y, enemy.centerX() - location.x + 10));
+        int angle = (int) Math.toDegrees(Math.atan2(enemy.centerY() - hitBox.centerY(), enemy.centerX() - hitBox.centerX()));
 
         angle += 90;
         //Log.w("Debug:", "angle:" + angle);

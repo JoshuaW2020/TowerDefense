@@ -63,7 +63,7 @@ class TowerGame extends SurfaceView implements Runnable, GameBroadcaster {
 
         inputController = new InputController(this);
 
-        userInterface = new UserInterface(screenSize);
+        userInterface = new UserInterface(screenSize, context);
 
         //Initialize the game state
         gameState = new GameState();

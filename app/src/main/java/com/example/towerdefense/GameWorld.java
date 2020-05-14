@@ -1,19 +1,15 @@
 package com.example.towerdefense;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.example.towerdefense.MoveableObjectType.Behemoth;
 import static com.example.towerdefense.MoveableObjectType.Drone;
@@ -31,7 +27,6 @@ public class GameWorld {
     Point screenSize;
     float blockSize;
 
-    private MoveableObjectFactory movingObjectsFactory;
     private FixedGameObjectFactory fixedObjectFactory;
 
     private ArrayList<MoveableGameObject> enemies;
@@ -57,14 +52,12 @@ public class GameWorld {
         towers = new ArrayList();
 
 
-        //Create the Moveable object factory to create all the moveable objects
-        movingObjectsFactory = new MoveableObjectFactory(context, blockSize, screenSize);
-
+        //initialize the tower factory
         fixedObjectFactory = new FixedGameObjectFactory(context, blockSize, screenSize);
 
     }
 
-    //Created and place tower into game world
+    //Create and place tower into game world
     public void addTower(FixedObjectType towerType, Point location, GameState gameState) {
 
         //Create the tower
@@ -76,12 +69,14 @@ public class GameWorld {
         //If tower intersects with path, delete tower
         for (Rect path : paths) {
             if (towers.get(towers.size() - 1).getHitBox().intersect(path)) {
-
                 //Refund for tower
                 gameState.refundTower(towers.get(towers.size() - 1).getTowerType());
                 //Now remove tower
                 towers.remove(towers.size() - 1);
-            }
+
+                //Tower was unable to be placed, deleted tower, now break out of checking loop - not great, but works
+                break;
+                }
         }
     }
 

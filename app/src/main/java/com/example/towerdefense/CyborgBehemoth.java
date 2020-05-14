@@ -38,14 +38,14 @@ public class CyborgBehemoth extends MoveableGameObject {
 
     CyborgBehemoth(Context context, float blockSize, Point screenSize) {
         super(Behemoth);
-        this.size = blockSize * 2; //big target
+        this.size = blockSize * 3; //big target
 
         create(context, screenSize);
     }
 
     private void create(Context context, Point screenSize) {
-        health = 120;        //Lots of HP
-        speed = 40;         //SLOW
+        health = 200;        //Lots of HP
+        speed = 50;         //SLOW
         resistance = 0;     //should make part of a strategy based on previous wave's resistance/tower damage
 
         //Assign bitmap/scale design
@@ -60,7 +60,7 @@ public class CyborgBehemoth extends MoveableGameObject {
         hitBox = new RectF();
 
         dead = false;
-        worth = 5; //Worth medium amount
+        worth = 10; //Worth medium amount
 
     }
 
@@ -69,10 +69,6 @@ public class CyborgBehemoth extends MoveableGameObject {
 
         // Spawn at location given
         this.location = location;
-
-        //Log.w("drone", "x: " + location.x + " y: " + location.y);
-
-        //heading = 90;
 
         updateHitBox();
     }
