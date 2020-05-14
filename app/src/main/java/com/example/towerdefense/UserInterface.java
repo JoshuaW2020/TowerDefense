@@ -42,10 +42,10 @@ public class UserInterface {
         buttonPadding = screenWidth / 100;
 
         Rect buyPlasmaTurret = new Rect(statsPadding, 15, statsPadding + buttonWidth, 15 + buttonHeight);
-        Rect buyLaserCannon = new Rect(statsPadding + buttonWidth + buttonPadding, 15, statsPadding + (buttonWidth * 2) + buttonPadding, 15 +buttonHeight);
+        Rect buyLaserCannon = new Rect(statsPadding + buttonWidth + buttonPadding, 15, statsPadding + (buttonWidth * 2) + buttonPadding, 15 + buttonHeight);
         Rect buyAntimatterRockets = new Rect(statsPadding + (buttonWidth * 2) + (buttonPadding * 2), 15, statsPadding + (buttonWidth * 3) + (buttonPadding * 2), 15 + buttonHeight);
 
-        Rect pauseB = new Rect(screenWidth - buttonWidth - buttonPadding, 15, screenWidth - buttonPadding, buttonHeight);
+        Rect pauseB = new Rect(screenWidth - buttonWidth - buttonPadding, 15, screenWidth - buttonPadding, 15 + buttonHeight);
 
         buyButtons = new ArrayList();
         buyButtons.add(buyPlasmaTurret);
@@ -63,10 +63,14 @@ public class UserInterface {
         Bitmap button3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.rocket_turret);
         button3 = Bitmap.createScaledBitmap(button3, buttonWidth, buttonHeight, false);
 
+        Bitmap button4 = BitmapFactory.decodeResource(context.getResources(), R.drawable.pause_button);
+        button4 = Bitmap.createScaledBitmap(button4, buttonWidth, buttonHeight, false);
+
         buttonBitmaps = new ArrayList();
         buttonBitmaps.add(button1);
         buttonBitmaps.add(button2);
         buttonBitmaps.add(button3);
+        buttonBitmaps.add(button4);
     }
 
     public void draw(Canvas canvas, Paint paint, GameState gameState) {
@@ -128,12 +132,12 @@ public class UserInterface {
         //Set custom color for buttons
         paint.setColor(Color.argb(100, 255, 255, 255));
 
-        for (int i = 0; i < buyButtons.size() - 1; i++) {
+        for (int i = 0; i < buyButtons.size(); i++) {
             canvas.drawBitmap(buttonBitmaps.get(i), buyButtons.get(i).centerX() - (buttonWidth / 2), buyButtons.get(i).centerY() - (buttonWidth / 2), paint);
         }
 
         // Draw pause
-        canvas.drawRect(buyButtons.get(3), paint);
+        //canvas.drawRect(buyButtons.get(3), paint);
 
         //Set colors back
         paint.setColor(Color.argb(255, 255, 255, 255));

@@ -1,6 +1,8 @@
 package com.example.towerdefense;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -36,6 +38,9 @@ public class GameWorld {
 
     private ArrayList<FixedGameObject> towers;
 
+    private ArrayList<Rect> base_parts;
+    private ArrayList<Bitmap> base_bitmap;
+
     GameWorld(Context context, Point screenSize) {
         this.context = context;
 
@@ -51,6 +56,8 @@ public class GameWorld {
 
         towers = new ArrayList();
 
+        base_parts = new ArrayList();
+        base_bitmap = new ArrayList();
 
         //initialize the tower factory
         fixedObjectFactory = new FixedGameObjectFactory(context, blockSize, screenSize);
@@ -86,6 +93,22 @@ public class GameWorld {
         enemies = level.getWaveEnemies(gameState);
 
         paths = level.getPath();
+
+        //Also add base walls
+        Rect base1 = new Rect(screenSize.x - 200, paths.get(2).top - 220, screenSize.x, paths.get(2).top - 20);
+        Rect base2 = new Rect(screenSize.x - 200, paths.get(2).bottom + 20, screenSize.x, paths.get(2).bottom + 220);
+
+        //Assign bitmap/scale design
+        Bitmap base1Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.base_wall);
+        base1Bitmap = Bitmap.createScaledBitmap(base1Bitmap, 200, 200, false);
+
+        Bitmap base2Bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.base_wall);
+        base2Bitmap = Bitmap.createScaledBitmap(base2Bitmap, 200, 200, false);
+
+        base_parts.add(base1);
+        base_parts.add(base2);
+        base_bitmap.add(base1Bitmap);
+        base_bitmap.add(base2Bitmap);
 
     }
 
@@ -231,6 +254,8 @@ public class GameWorld {
             }
         }
 
+
+
         paint.setColor(Color.argb(255, 160, 160, 160));
 
         //Draw the different enemies
@@ -241,6 +266,11 @@ public class GameWorld {
         //Now draw the towers / bullets
         for (FixedGameObject tower : towers) {
             tower.draw(canvas, paint);
+        }
+
+        //Draw the base walls
+        for (int i = 0; i < base_parts.size(); i++) {
+            canvas.drawBitmap(base_bitmap.get(i), base_parts.get(i).left, base_parts.get(i).top, paint);
         }
 
     }
