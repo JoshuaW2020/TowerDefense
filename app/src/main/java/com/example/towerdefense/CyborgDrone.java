@@ -44,8 +44,8 @@ public class CyborgDrone extends MoveableGameObject {
     }
 
     private void create(Context context, Point screenSize) {
-        health = 16;
-        speed = 90;         //will make speed a part of the movement strategy later
+        health = 16;        // low health
+        speed = 90;         //speed - pretty fast
         resistance = 0;     //should also make part of a strategy based on previous wave's resistance/tower damage
 
         //Assign bitmap/scale design
@@ -70,10 +70,6 @@ public class CyborgDrone extends MoveableGameObject {
         // Spawn at location given
         this.location = location;
 
-        //Log.w("drone", "x: " + location.x + " y: " + location.y);
-
-        //heading = 90;
-
         updateHitBox();
     }
 
@@ -89,7 +85,7 @@ public class CyborgDrone extends MoveableGameObject {
         int angle = (int) Math.toDegrees(Math.atan2(target.y - location.y, target.x - location.x + 10));
 
         angle += 90;
-        //Log.w("Debug:", "angle:" + angle);
+
         //Rotate turret to look at enemy
         Matrix matrix = new Matrix();
         matrix.setTranslate(-size/2, -size/2);
